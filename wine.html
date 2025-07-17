@@ -151,7 +151,7 @@
             border: 2px solid #8b0000;
             z-index: 1004; /* Higher than overlay */
             width: fit-content;
-            max-width: 90%;
+            max-width: 95%; /* Slightly wider to fit bigger image */
             box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
             border-radius: 12px;
             overflow-y: auto;
@@ -186,7 +186,7 @@
 
         #wine-image {
             width: auto;
-            height: 440px;
+            height: 500px; /* Reduced from 600px to make it smaller */
             object-fit: contain;
             border-radius: 8px;
             display: none;
@@ -360,7 +360,7 @@
             }
 
             #wine-image {
-                height: 200px; /* Reduce image height on mobile to fit side-by-side */
+                height: 250px; /* Reduced from 200px to make it smaller on mobile */
                 margin-top: 5px;
             }
         }
