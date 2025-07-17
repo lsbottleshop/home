@@ -151,7 +151,7 @@
             border: 2px solid #8b0000;
             z-index: 1003;
             width: 90%;
-            max-width: 600px; /* Increased to accommodate image */
+            max-width: 600px;
             box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
             border-radius: 12px;
             overflow-y: auto;
@@ -174,20 +174,23 @@
         #wine-details {
             display: flex;
             flex-direction: row;
-            gap: 20px;
+            gap: 5px;
             align-items: flex-start;
+            justify-content: center;
         }
 
         #wine-details-text {
-            flex: 1;
+            /* Removed flex:1 to allow natural width and centering */
+            /* Removed padding-right to reduce space */
         }
 
         #wine-image {
-            max-width: 150px;
-            height: auto;
+            width: auto;
+            height: 440px; /* Doubled from previous 220px */
+            object-fit: contain;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            display: none; /* Hidden by default, shown if image exists */
+            display: none;
+            margin-top: 5px; /* Added padding on top for alignment */
         }
 
         #popup p {
@@ -338,12 +341,14 @@
             }
 
             #wine-details {
-                flex-direction: column; /* Stack image and text on mobile */
+                flex-direction: column;
                 align-items: center;
+                justify-content: flex-start;
             }
 
             #wine-image {
-                max-width: 100px; /* Smaller image on mobile */
+                height: 340px; /* Doubled from previous 170px */
+                margin-top: 0; /* No top margin on mobile */
             }
         }
     </style>
