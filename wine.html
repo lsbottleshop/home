@@ -196,6 +196,7 @@
         #popup p {
             margin: 10px 0;
             font-size: 16px;
+            white-space: nowrap; /* Prevent wrapping within each detail line */
         }
 
         #popup-close {
@@ -349,17 +350,17 @@
             }
 
             #popup {
-                max-width: 90%;
+                max-width: 100%; /* Widen to full screen on mobile */
             }
 
             #wine-details {
-                flex-direction: row; /* Keep side-by-side on mobile */
+                flex-direction: row;
                 align-items: flex-start;
                 justify-content: center;
             }
 
             #wine-image {
-                height: 340px;
+                height: 200px; /* Reduce image height on mobile to fit side-by-side */
                 margin-top: 5px;
             }
         }
