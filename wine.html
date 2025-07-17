@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🍇 Little Silver Bottleshop Search</title>
     <style>
-        /* [Your existing CSS styles remain unchanged] */
         /* Base Styles */
         body {
             font-family: Arial, sans-serif;
-            
-
-background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
+            background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
             color: #4b2b33;
             margin: 0;
             padding: 0;
@@ -68,12 +65,11 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
             background: #f5f0e6;
             padding: 10px;
             border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             z-index: 1001;
         }
 
-        /* Fixed State Styles */
         #search-bar.fixed {
             position: fixed;
             top: 0;
@@ -84,7 +80,6 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
             z-index: 1002;
         }
 
-        /* Placeholder to prevent content jump */
         #search-bar-placeholder {
             display: none;
         }
@@ -156,7 +151,7 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
             border: 2px solid #8b0000;
             z-index: 1003;
             width: 90%;
-            max-width: 360px;
+            max-width: 600px; /* Increased to accommodate image */
             box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
             border-radius: 12px;
             overflow-y: auto;
@@ -174,6 +169,25 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
             color: #8b0000;
             font-size: 20px;
             text-align: center;
+        }
+
+        #wine-details {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        #wine-details-text {
+            flex: 1;
+        }
+
+        #wine-image {
+            max-width: 150px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: none; /* Hidden by default, shown if image exists */
         }
 
         #popup p {
@@ -318,6 +332,19 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
                 top: 70px;
                 width: 90%;
             }
+
+            #popup {
+                max-width: 90%;
+            }
+
+            #wine-details {
+                flex-direction: column; /* Stack image and text on mobile */
+                align-items: center;
+            }
+
+            #wine-image {
+                max-width: 100px; /* Smaller image on mobile */
+            }
         }
     </style>
 </head>
@@ -327,7 +354,6 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
         <div id="help-icon" aria-label="Help"><i class="fas fa-question"></i></div>
     </header>
 
-    <!-- Search Bar Placeholder -->
     <div id="search-bar-placeholder"></div>
 
     <div id="search-bar">
@@ -342,55 +368,50 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
 
     <div id="results"></div>
 
-    <!-- Popup Window -->
     <div id="popup">
         <h2 id="wine-name"></h2>
-        <div id="wine-details"></div>
+        <div id="wine-details">
+            <div id="wine-details-text"></div>
+            <img id="wine-image" alt="Bottle Image">
+        </div>
         <span id="popup-close"><i class="fas fa-times"></i> Close</span>
     </div>
 
-    <!-- Filter Menu -->
     <div id="filter-menu">
         <h3>Filter Options</h3>
-
-        <!-- Collapsible Color Section -->
         <details>
             <summary><strong>Color:</strong></summary>
             <p><label><input type="radio" name="color" class="filter-option" value="red"> Red</label></p>
             <p><label><input type="radio" name="color" class="filter-option" value="white"> White</label></p>
             <p><label><input type="radio" name="color" class="filter-option" value="rosé"> Rosé</label></p>
         </details>
-
-        <!-- Collapsible Type Section -->
         <details>
             <summary><strong>Type:</strong></summary>
             <p><label><input type="radio" name="type" class="filter-option" value="bordeaux"> Bordeaux</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="brunello"> Brunello</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="burgundy"> Burgundy</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="cabernet"> Cabernet</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="champagne"> Champagne</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="chardonnay"> Chardonnay</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="chianti"> Chianti</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="dessert"> Dessert</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="fortified"> Fortified</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="loire-white"> Loire White</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="merlot"> Merlot</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="old-world-red"> Old World Red</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="pinot-noir"> Pinot Noir</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="port"> Port</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="prosecco"> Prosecco</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="red"> Red</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="red-blend"> Red Blend</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="rhone-red"> Rhone Red</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="rosé"> Rosé</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="sake"> Sake</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="spanish-red"> Spanish Red</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="sparkling"> Sparkling</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="still"> Still</label></p>
-    <p><label><input type="radio" name="type" class="filter-option" value="sweet-red"> Sweet Red</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="brunello"> Brunello</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="burgundy"> Burgundy</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="cabernet"> Cabernet</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="champagne"> Champagne</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="chardonnay"> Chardonnay</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="chianti"> Chianti</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="dessert"> Dessert</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="fortified"> Fortified</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="loire-white"> Loire White</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="merlot"> Merlot</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="old-world-red"> Old World Red</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="pinot-noir"> Pinot Noir</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="port"> Port</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="prosecco"> Prosecco</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="red"> Red</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="red-blend"> Red Blend</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="rhone-red"> Rhone Red</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="rosé"> Rosé</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="sake"> Sake</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="spanish-red"> Spanish Red</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="sparkling"> Sparkling</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="still"> Still</label></p>
+            <p><label><input type="radio" name="type" class="filter-option" value="sweet-red"> Sweet Red</label></p>
         </details>
-
-        <!-- Collapsible Country Section -->
         <details>
             <summary><strong>Country:</strong></summary>
             <p><label><input type="radio" name="country" class="filter-option" value="argentina"> Argentina</label></p>
@@ -411,37 +432,28 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
             <p><label><input type="radio" name="country" class="filter-option" value="spain"> Spain</label></p>
             <p><label><input type="radio" name="country" class="filter-option" value="usa"> USA</label></p>
         </details>
-
-        <!-- Collapsible Dry/Sweet Section -->
         <details>
             <summary><strong>Dry/Sweet:</strong></summary>
             <p><label><input type="radio" name="dry-sweet" class="filter-option" value="dry"> Dry</label></p>
             <p><label><input type="radio" name="dry-sweet" class="filter-option" value="semi-dry"> Semi-Dry</label></p>
             <p><label><input type="radio" name="dry-sweet" class="filter-option" value="sweet"> Sweet</label></p>
         </details>
-
-        <!-- Collapsible Body Section -->
         <details>
             <summary><strong>Body:</strong></summary>
             <p><label><input type="radio" name="body" class="filter-option" value="light"> Light</label></p>
             <p><label><input type="radio" name="body" class="filter-option" value="medium"> Medium</label></p>
             <p><label><input type="radio" name="body" class="filter-option" value="full"> Full</label></p>
         </details>
-
-        <!-- Collapsible Acidity Section -->
         <details>
             <summary><strong>Acidity:</strong></summary>
             <p><label><input type="radio" name="acidity" class="filter-option" value="low"> Low</label></p>
             <p><label><input type="radio" name="acidity" class="filter-option" value="medium"> Medium</label></p>
             <p><label><input type="radio" name="acidity" class="filter-option" value="high"> High</label></p>
         </details>
-
-        <!-- Clear Filters and Close -->
         <span id="clear-filters-button"><i class="fas fa-times"></i> Clear All Filters</span>
         <span id="filter-menu-close"><i class="fas fa-times"></i> Close</span>
     </div>
 
-    <!-- Help Popup -->
     <div id="help-popup">
         <h3>How to Search</h3>
         <p>You can use the following examples to search:</p>
@@ -453,16 +465,14 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
         <span id="help-popup-close"><i class="fas fa-times"></i> Close</span>
     </div>
 
-    <!-- Font Awesome Icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-    <!-- Papa Parse Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script>
         const dataUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ1zW16VYUie_DePNokpF9ek8qz6sZnCEowjF9ME1iKP1ugu15RCelOqmsBwDrXP9I8WvZZaZevlmjP/pub?gid=1546911055&single=true&output=csv";
         let wines = [];
         let originalWines = [];
         let wineToSearch = null;
-        let priceSortAscending = true; // Initialize to true for ascending order
+        let priceSortAscending = true;
 
         const countryAliases = {
             "french": "france",
@@ -520,7 +530,6 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
             "oaky": "🌳"
         };
 
-        // Debounce function to limit the rate at which a function can fire.
         function debounce(func, delay) {
             let timer;
             return function (...args) {
@@ -529,14 +538,12 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
             };
         }
 
-        // Function to get the 'wine' parameter from the URL and decode it to handle multi-word wines
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             const paramValue = urlParams.get(param);
             return paramValue ? decodeURIComponent(paramValue) : null;
         }
 
-        // Function to extract the primary country name from a string like "USA (Oregon)"
         function extractPrimaryCountry(countryString) {
             if (!countryString) return '';
             const primaryCountry = countryString.split('(')[0].split('-')[0].trim().toLowerCase();
@@ -544,51 +551,49 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
         }
 
         async function loadWineData() {
-    try {
-        const response = await fetch(dataUrl);
-        if (!response.ok) {
-            console.error("Network response was not ok: ", response.statusText);
-            return;
-        }
-        const data = await response.text();
-        const parsedData = Papa.parse(data, { header: true }).data;
-
-        wines = parsedData.map(wine => {
-            const cleanedWine = {};
-            for (let key in wine) {
-                if (wine.hasOwnProperty(key)) {
-                    let cleanedKey = key.trim().toLowerCase().replace(/\//g, '-');
-                    cleanedWine[cleanedKey] = wine[key] ? wine[key].trim() : '';
+            try {
+                const response = await fetch(dataUrl);
+                if (!response.ok) {
+                    console.error("Network response was not ok: ", response.statusText);
+                    return;
                 }
-            }
-            return cleanedWine;
-        })
-        // Filter out items with Total Unit of 0
-        .filter(wine => wine['wine'] && wine['wine'] !== '' && parseInt(wine['total unit']) > 0);
+                const data = await response.text();
+                const parsedData = Papa.parse(data, { header: true }).data;
 
-        originalWines = [...wines];
+                wines = parsedData.map(wine => {
+                    const cleanedWine = {};
+                    for (let key in wine) {
+                        if (wine.hasOwnProperty(key)) {
+                            let cleanedKey = key.trim().toLowerCase().replace(/\//g, '-');
+                            cleanedWine[cleanedKey] = wine[key] ? wine[key].trim() : '';
+                        }
+                    }
+                    return cleanedWine;
+                })
+                .filter(wine => wine['wine'] && wine['wine'] !== '' && parseInt(wine['total unit']) > 0);
 
-        displayAllResults();
+                originalWines = [...wines];
+                displayAllResults();
 
-        if (wineToSearch) {
-            const searchInput = document.getElementById('search-input');
-            if (searchInput) {
-                searchInput.value = wineToSearch;
-                debouncedSearch();
-                document.getElementById('clear-button').style.display = 'inline';
+                if (wineToSearch) {
+                    const searchInput = document.getElementById('search-input');
+                    if (searchInput) {
+                        searchInput.value = wineToSearch;
+                        debouncedSearch();
+                        document.getElementById('clear-button').style.display = 'inline';
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading data: ", error);
             }
         }
-    } catch (error) {
-        console.error("Error loading data: ", error);
-    }
-}
 
         function capitalize(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
 
         function displayAllResults(filteredWines = wines) {
-            console.log("Displaying Wines:", filteredWines.map(wine => ({ wine: wine.wine, priceRating: wine['price rating'] }))); // Debugging line
+            console.log("Displaying Wines:", filteredWines.map(wine => ({ wine: wine.wine, priceRating: wine['price rating'] })));
             const resultsContainer = document.getElementById('results');
             resultsContainer.innerHTML = '';
 
@@ -619,7 +624,7 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
 
         function showPopup(wine) {
             document.getElementById('wine-name').textContent = capitalize(wine['wine']);
-            const wineDetailsContainer = document.getElementById('wine-details');
+            const wineDetailsContainer = document.getElementById('wine-details-text');
             wineDetailsContainer.innerHTML = '';
 
             const attributesOrder = ['country', 'type', 'color', 'dry-sweet', 'body', 'acidity', 'tannins', 'fruits', 'floral', 'herbal', 'vegetal', 'spicy', 'earthy', 'mineral', 'oaky'];
@@ -634,7 +639,7 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
                         displayAttribute = 'Sweet/Dry';
                     }
 
-                    if (attribute === 'country' && wine['country']) {
+                    if (attribute === 'country') {
                         const primaryCountry = extractPrimaryCountry(wine['country']);
                         const flag = countryFlags[primaryCountry] || '';
                         const displayCountry = (primaryCountry === 'usa') ? 'USA' : capitalize(primaryCountry);
@@ -662,97 +667,79 @@ background: linear-gradient(to bottom, #f5f0e6, #e8e0d4);
                 wineDetailsContainer.appendChild(p);
             }
 
+            // Add bottle image
+            const wineImage = document.getElementById('wine-image');
+            if (wine['image-url'] && wine['image-url'].startsWith('http')) {
+                wineImage.src = wine['image-url'];
+                wineImage.alt = `${capitalize(wine['wine'])} Bottle Image`;
+                wineImage.style.display = 'block';
+            } else {
+                wineImage.style.display = 'none';
+            }
+
             document.getElementById('popup').style.display = 'block';
         }
 
-        // Updated sorting function to sort based on the number of '$' in "Price Rating"
         function sortWinesByPrice() {
-            console.log("Sort button clicked."); // Debugging line
-
+            console.log("Sort button clicked.");
             if (wines.length === 0) {
                 console.warn("No wines available to sort.");
                 return;
             }
 
-            // Sort wines based on the number of '$' in "Price Rating"
             wines.sort((a, b) => {
-                // Get the number of '$' in each "Price Rating"
                 const aPriceValue = a['price rating'] ? a['price rating'].length : 0;
                 const bPriceValue = b['price rating'] ? b['price rating'].length : 0;
-
-                // Debugging lines
-                console.log(`Comparing: ${aPriceValue} vs ${bPriceValue}`);
-
                 return priceSortAscending ? aPriceValue - bPriceValue : bPriceValue - aPriceValue;
             });
 
-            // Log the sorted prices for verification
             console.log("Wines after sorting:", wines.map(wine => wine['price rating']));
-
-            // Update the sort button icon to reflect the current sort order
             const sortButton = document.getElementById('sort-price-button');
             if (sortButton) {
                 const sortIcon = sortButton.querySelector('i');
                 if (sortIcon) {
-                    // Remove existing sort classes
                     sortIcon.classList.remove('fa-sort-up', 'fa-sort-down', 'fa-sort');
-                    
-                    // Add appropriate sort class based on current sort order
-                    if (priceSortAscending) {
-                        sortIcon.classList.add('fa-sort-up');
-                    } else {
-                        sortIcon.classList.add('fa-sort-down');
-                    }
+                    sortIcon.classList.add(priceSortAscending ? 'fa-sort-up' : 'fa-sort-down');
                 }
             }
-
-            // **Toggle sort order for the next click AFTER updating the icon**
             priceSortAscending = !priceSortAscending;
-
-            // Refresh the results display
             displayAllResults(wines);
         }
 
-        // Function to handle search input
-       function searchWines() {
-                const input = document.getElementById('search-input').value.toLowerCase().trim();
-                 const searchTerms = input.split(' ').map(term => countryAliases[term] || term).filter(term => term);
-                 const resultsContainer = document.getElementById('results');
+        function searchWines() {
+            const input = document.getElementById('search-input').value.toLowerCase().trim();
+            const searchTerms = input.split(' ').map(term => countryAliases[term] || term).filter(term => term);
+            const resultsContainer = document.getElementById('results');
 
-                 const selectedFilters = {};
-                 const filterGroups = ['color', 'type', 'country', 'dry-sweet', 'body', 'acidity'];
-                 filterGroups.forEach(group => {
-                     const selectedOption = document.querySelector(`input[name="${group}"]:checked`);
-                     if (selectedOption) {
-                         selectedFilters[group] = selectedOption.value.toLowerCase();
-                     }
-                 });
+            const selectedFilters = {};
+            const filterGroups = ['color', 'type', 'country', 'dry-sweet', 'body', 'acidity'];
+            filterGroups.forEach(group => {
+                const selectedOption = document.querySelector(`input[name="${group}"]:checked`);
+                if (selectedOption) {
+                    selectedFilters[group] = selectedOption.value.toLowerCase();
+                }
+            });
 
-                 // Filter out items with Total Unit of 0
-                 wines = originalWines.filter(wine => {
-             const matchesSearch = searchTerms.every(term => {
-            return Object.values(wine).some(value => 
-                             value && value.toLowerCase().includes(term)
-                         );
-                     });
+            wines = originalWines.filter(wine => {
+                const matchesSearch = searchTerms.every(term => {
+                    return Object.values(wine).some(value => 
+                        value && value.toLowerCase().includes(term)
+                    );
+                });
+                const matchesFilters = Object.keys(selectedFilters).every(key => {
+                    const filterValue = selectedFilters[key];
+                    const wineValue = wine[key] ? wine[key].toLowerCase() : '';
+                    return wineValue === filterValue;
+                });
+                return matchesSearch && matchesFilters && parseInt(wine['total unit']) > 0;
+            });
 
-        const matchesFilters = Object.keys(selectedFilters).every(key => {
-            const filterValue = selectedFilters[key];
-            const wineValue = wine[key] ? wine[key].toLowerCase() : '';
-            return wineValue === filterValue;
-        });
+            displayAllResults();
+            if (wines.length === 0) {
+                resultsContainer.innerHTML = '<p>No wines match your search criteria.</p>';
+            }
+        }
 
-        return matchesSearch && matchesFilters && parseInt(wine['total unit']) > 0;
-    });
-
-    displayAllResults();
-
-    if (wines.length === 0) {
-        resultsContainer.innerHTML = '<p>No wines match your search criteria.</p>';
-    }
-}
-
-        // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
             wineToSearch = getQueryParam('wine');
             loadWineData();
