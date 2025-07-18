@@ -372,18 +372,20 @@
             }
 
             #popup {
-                max-width: 100%; /* Widen to full screen on mobile */
+                max-width: 95%; /* Slightly narrower to add side margins, reducing squished look */
+                padding: 15px; /* Reduced padding to fit more content */
             }
 
             #wine-details {
                 flex-direction: row;
                 align-items: center; /* Vertically center image with details */
                 justify-content: center;
-                flex-wrap: wrap; /* Allow wrapping if needed */
+                flex-wrap: nowrap; /* Prevent wrapping on mobile to avoid squishing */
+                gap: 10px; /* Increased gap for better spacing */
             }
 
             #wine-image {
-                height: 250px;
+                height: 200px; /* Reduced height to prevent overlay and fit neatly */
                 margin-top: 0; /* Align with top of details */
                 margin-bottom: 0; /* Ensure no extra space at bottom */
                 vertical-align: middle; /* Center vertically between first and last detail line */
