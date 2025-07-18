@@ -186,7 +186,7 @@
 
         #wine-image {
             width: auto;
-            height: 333px; /* 2/3 of previous 500px */
+            height: 400px; /* Increased from 333px for non-phone screens */
             object-fit: contain;
             border-radius: 8px;
             display: none;
@@ -197,6 +197,28 @@
             margin: 10px 0;
             font-size: 16px;
             white-space: nowrap; /* Prevent wrapping within each detail line */
+        }
+
+        #description {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #4b2b33;
+            max-width: 320px; /* Set max width to 320px */
+            margin-left: auto;
+            margin-right: auto;
+            word-wrap: break-word; /* Allow text to wrap within the max-width */
+        }
+
+        #map-link {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #8b0000;
+            text-decoration: underline;
+            display: block;
+            max-width: 320px; /* Set max width to 320px */
+            margin-left: auto;
+            margin-right: auto;
+            word-wrap: break-word; /* Allow text to wrap within the max-width */
         }
 
         #popup-close {
@@ -357,11 +379,27 @@
                 flex-direction: row;
                 align-items: center; /* Vertically center image with details */
                 justify-content: center;
+                flex-wrap: wrap; /* Allow wrapping if needed */
             }
 
             #wine-image {
                 height: 250px;
-                margin-top: 5px;
+                margin-top: 0; /* Align with top of details */
+                margin-bottom: 0; /* Ensure no extra space at bottom */
+                vertical-align: middle; /* Center vertically between first and last detail line */
+            }
+
+            #wine-details-text {
+                flex: 1; /* Allow text to take available space */
+                min-width: 0; /* Prevent overflow */
+            }
+
+            #description {
+                width: 100%; /* Full width on mobile */
+            }
+
+            #map-link {
+                width: 100%; /* Full width on mobile */
             }
         }
     </style>
@@ -395,6 +433,8 @@
             <div id="wine-details-text"></div>
             <img id="wine-image" alt="Bottle Image">
         </div>
+        <div id="description"></div>
+        <a id="map-link" href="#" target="_blank"></a>
         <span id="popup-close"><i class="fas fa-times"></i> Close</span>
     </div>
 
@@ -668,7 +708,7 @@
                         if (flag) {
                             p.innerHTML = `<strong>${displayAttribute}:</strong> ${displayCountry} ${flag}`;
                         } else {
-                            p.innerHTML = `<strong>${displayAttribute}:</strong> ${displayCountry}`;
+                            p.innerHTML = `<strong>${displayAttribute}:</strong> ${displayCountry} (Flag unavailable)`;
                         }
                     } else if (attribute === 'dry-sweet') {
                         const displayValue = capitalize(wine[attribute].replace('-', ' '));
@@ -696,6 +736,25 @@
                 wineImage.style.display = 'block';
             } else {
                 wineImage.style.display = 'none';
+            }
+
+            // Add description
+            const descriptionElement = document.getElementById('description');
+            if (wine['description']) {
+                descriptionElement.textContent = wine['description'];
+                descriptionElement.style.display = 'block';
+            } else {
+                descriptionElement.style.display = 'none';
+            }
+
+            // Add map link
+            const mapLinkElement = document.getElementById('map-link');
+            if (wine['map-url'] && wine['map-url'].startsWith('http')) {
+                mapLinkElement.href = wine['map-url'];
+                mapLinkElement.textContent = 'View Map Location';
+                mapLinkElement.style.display = 'block';
+            } else {
+                mapLinkElement.style.display = 'none';
             }
 
             document.getElementById('overlay').style.display = 'block';
