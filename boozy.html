@@ -32,8 +32,6 @@
             text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
             margin-bottom: 20px;
             margin-top: 7px;
-
-
             text-align: center;
         }
 
@@ -163,6 +161,7 @@
             transform: translate(-50%, -50%);
             width: 90%;
             max-width: 500px;
+            max-height: 80vh;
             background-color: #222;
             border: 5px solid #ff5a5f;
             border-radius: 15px;
@@ -170,14 +169,17 @@
             text-align: center;
             z-index: 10;
             color: #fff;
+            overflow-y: auto;
         }
-	      .tap {
-           
+        .tap {
             text-align: center;
-        
         }
 
-        .popup-title { font-size: 2.5rem; margin-bottom: 15px; color: #ff5a5f; }
+        .popup-title { 
+            font-size: 2.5rem; 
+            margin-bottom: 15px; 
+            color: #ff5a5f; 
+        }
 
         /* Center reel within the pop-up */
         .popup-reel-container {
@@ -191,7 +193,30 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
+            margin: 0 auto 20px;
+        }
+
+        .recipe-container {
+            margin-top: 20px;
+            text-align: left;
+            font-family: Arial, sans-serif;
+            font-size: 1rem;
+        }
+
+        .recipe-container h3 {
+            color: #ff5a5f;
+            margin-bottom: 10px;
+            font-family: 'Luckiest Guy', cursive;
+            font-size: 1.5rem;
+        }
+
+        .recipe-container ul, .recipe-container ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .recipe-container li {
+            margin-bottom: 8px;
         }
     </style>
 </head>
@@ -220,7 +245,7 @@
         <div class="segment">White Wine</div>
         <div class="segment">Beer</div>
         <div class="segment">Champagne</div>
-	<div class="segment">Bourbon</div>
+        <div class="segment">Bourbon</div>
         <div class="segment">Scotch</div>
         <div class="segment">Tequila</div>
         <div class="segment">Vodka</div>
@@ -233,7 +258,6 @@
         <div class="segment">Beer</div>
         <div class="segment">Champagne</div>
     </div>
-	
 </div>
 
 <button class="button" onclick="spinReel()">SPIN</button>
@@ -259,8 +283,8 @@
         <div class="indicator-left"></div>
         <div class="indicator-right"></div>
         <div class="reel" id="popupReel"></div>
-	
     </div>
+    <div class="recipe-container" id="recipeContainer"></div>
     <br><button class="button" onclick="spinOrClosePopup(this)">Choozy Boozy</button>
 </div>
 
@@ -272,80 +296,2510 @@
 
     const drinkOptions = {
         "Bourbon": [
-        "Old Fashioned", "Whiskey Sour", "Mint Julep", "Boulevardier", "Manhattan", 
-        "Bourbon Smash", "Kentucky Mule", "Gold Rush", "Brown Derby", "Hot Toddy", 
-        "Mint Julep", "Bourbon and Coke", "John Collins", "New York Sour", "Sazerac", 
-        "Bourbon Highball", "Red Hook", "Paper Plane", "Whiskey Rickey", "Bourbon Hot Chocolate"
-    ],
-    "Scotch": [
-        "Rob Roy", "Rusty Nail", "Penicillin", "Blood and Sand", "Scotch and Soda", 
-        "The Godfather", "Hot Toddy", "Mamie Taylor", "Scotch Cobbler", "Highland Mule", 
-        "Whiskey Fix", "Smoky Martini", "Rusty Sazerac", "Whiskey Daisy", "Blushing Monarch", 
-        "The Duke", "The Crobsy", "Widow’s Kiss", "Bobby Burns", "Fog Cutter"
-    ],
-    "Tequila": [
-        "Margarita", "Paloma", "Tequila Sunrise", "El Diablo", "Tequila Collins", 
-        "Mexican Mule", "Batanga", "Tequila Smash", "Tequila Old Fashioned", "Ranch Water", 
-        "La Rosita", "Siesta", "Tequila Sour", "Tequila Tonic", "Bloody Maria", 
-        "Matador", "Juan Collins", "Tequila Negroni", "Pepino", "Tequila Sazerac"
-    ],
-    "Vodka": [
-        "Bloody Mary", "Moscow Mule", "Cosmopolitan", "Vodka Martini", "White Russian", 
-        "Black Russian", "Sea Breeze", "Screwdriver", "Harvey Wallbanger", "Cape Cod", 
-        "Vodka Collins", "Vodka Gimlet", "Vodka Tonic", "Espresso Martini", "Appletini", 
-        "Blue Lagoon", "Kamikaze", "French Martini", "Sex on the Beach", "Lemon Drop"
-    ],
-    "Rum": [
-        "Daiquiri", "Mai Tai", "Pina Colada", "Mojito", "Dark ‘n’ Stormy", 
-        "Rum Punch", "Hurricane", "Rum Swizzle", "Planter’s Punch", "Cuba Libre", 
-        "Bahama Mama", "Painkiller", "Zombie", "Rum Old Fashioned", "Jungle Bird", 
-        "Rum Runners", "Mai Tai", "Corn ‘n’ Oil", "Shark Bite", "Hemingway Daiquiri"
-    ],
-    "Gin": [
-        "Gin & Tonic", "Negroni", "Martini", "Tom Collins", "French 75", 
-        "Gimlet", "Bee's Knees", "Southside", "Gin Fizz", "Gin Rickey", 
-        "Corpse Reviver #2", "Gin Basil Smash", "Clover Club", "Vesper", "Martinez", 
-        "Aviation", "Singapore Sling", "Pegu Club", "Army & Navy", "Last Word"
-    ],
-    "Sake": [
-        "Saketini", "Sake Bomb", "Plum Sake", "Cherry Blossom", "Tokyo Mule", 
-        "Sake Margarita", "Lychee Sake Martini", "Sake Lemonade", "Sake Spritzer", "Sake Collins", 
-        "Green Tea Sake", "Wasabi Martini", "Ginger Sake Smash", "Ume Highball", "Sake Mojito", 
-        "Sake Negroni", "Matcha Sake", "Grapefruit Sake", "Yuzu Mule", "Sake Sangria"
-    ],
-    "Brandy": [
-        "Sidecar", "Brandy Alexander", "Hot Toddy", "Brandy Sour", "Metropolitan", 
-        "Brandy Smash", "Applejack Brandy", "Brandy Daisy", "Vieux Carré", "French Connection", 
-        "Jack Rose", "Corpse Reviver", "Brandy Flip", "Brandy Crusta", "Brandy Collins", 
-        "Mulled Brandy", "Brandy Old Fashioned", "Between the Sheets", "Champs-Elysées", "Pisco Sour"
-    ],
-    "Red Wine": [
-        "Merlot", "Cabernet Sauvignon", "Rosé", "Shiraz", "Malbec", 
-        "Pinot Noir", "Zinfandel", "Sangiovese", "Chianti", "Tempranillo", 
-        "Grenache", "Syrah", "Cabernet Franc", "Carmenere", "Nero d'Avola", 
-        "Petite Sirah", "Pinotage", "Barbera", "Primitivo", "Mourvedre"
-    ],
-    "White Wine": [
-        "Chardonnay", "Pinot Grigio", "Rosé", "Sauvignon Blanc", "Riesling", 
-        "Moscato", "Viognier", "Chenin Blanc", "Gewürztraminer", "Albariño", 
-        "Verdelho", "Vermentino", "Pinot Blanc", "Torrontés", "Marsanne", 
-        "Grüner Veltliner", "Trebbiano", "Fiano", "Chablis", "Orvieto"
-    ],
-    "Beer": [
-        "Pale Ale", "IPA", "Stout", "Lager", "Porter", 
-        "Pilsner", "Saison", "Bock", "Amber Ale", "Witbier", 
-        "Weissbier", "Barleywine", "Belgian Ale", "Cream Ale", "Hefeweizen", 
-        "Kolsch", "Dunkel", "Brown Ale", "Imperial Stout", "Double IPA"
-    ],
-    "Champagne": [
-        "Mimosa", "Bellini", "Kir Royale", "French 75", "Death in the Afternoon", 
-        "Champagne Cocktail", "Poinsettia", "Seelbach", "Buck’s Fizz", "Sparkling Negroni", 
-        "Sorrento Sparkler", "Champagne Punch", "Blushing Bubbly", "Mango Mimosa", "Peach Fizz", 
-        "Lavender Fizz", "Pink Champagne Punch", "Pomegranate Spritz", "Ginger Fizz", "Champagne Julep"
-    ]
+            "Old Fashioned", "Whiskey Sour", "Mint Julep", "Boulevardier", "Manhattan", 
+            "Bourbon Smash", "Kentucky Mule", "Gold Rush", "Brown Derby", "Hot Toddy", 
+            "Bourbon and Coke", "John Collins", "New York Sour", "Sazerac", 
+            "Bourbon Highball", "Red Hook", "Paper Plane", "Whiskey Rickey", "Bourbon Hot Chocolate"
+        ],
+        "Scotch": [
+            "Rob Roy", "Rusty Nail", "Penicillin", "Blood and Sand", "Scotch and Soda", 
+            "The Godfather", "Hot Toddy", "Mamie Taylor", "Scotch Cobbler", "Highland Mule", 
+            "Whiskey Fix", "Smoky Martini", "Rusty Sazerac", "Whiskey Daisy", "Blushing Monarch", 
+            "The Duke", "The Crobsy", "Widow’s Kiss", "Bobby Burns", "Fog Cutter"
+        ],
+        "Tequila": [
+            "Margarita", "Paloma", "Tequila Sunrise", "El Diablo", "Tequila Collins", 
+            "Mexican Mule", "Batanga", "Tequila Smash", "Tequila Old Fashioned", "Ranch Water", 
+            "La Rosita", "Siesta", "Tequila Sour", "Tequila Tonic", "Bloody Maria", 
+            "Matador", "Juan Collins", "Tequila Negroni", "Pepino", "Tequila Sazerac"
+        ],
+        "Vodka": [
+            "Bloody Mary", "Moscow Mule", "Cosmopolitan", "Vodka Martini", "White Russian", 
+            "Black Russian", "Sea Breeze", "Screwdriver", "Harvey Wallbanger", "Cape Cod", 
+            "Vodka Collins", "Vodka Gimlet", "Vodka Tonic", "Espresso Martini", "Appletini", 
+            "Blue Lagoon", "Kamikaze", "French Martini", "Sex on the Beach", "Lemon Drop"
+        ],
+        "Rum": [
+            "Daiquiri", "Mai Tai", "Pina Colada", "Mojito", "Dark ‘n’ Stormy", 
+            "Rum Punch", "Hurricane", "Rum Swizzle", "Planter’s Punch", "Cuba Libre", 
+            "Bahama Mama", "Painkiller", "Zombie", "Rum Old Fashioned", "Jungle Bird", 
+            "Rum Runners", "Corn ‘n’ Oil", "Shark Bite", "Hemingway Daiquiri"
+        ],
+        "Gin": [
+            "Gin & Tonic", "Negroni", "Martini", "Tom Collins", "French 75", 
+            "Gimlet", "Bee's Knees", "Southside", "Gin Fizz", "Gin Rickey", 
+            "Corpse Reviver #2", "Gin Basil Smash", "Clover Club", "Vesper", "Martinez", 
+            "Aviation", "Singapore Sling", "Pegu Club", "Army & Navy", "Last Word"
+        ],
+        "Sake": [
+            "Saketini", "Sake Bomb", "Plum Sake", "Cherry Blossom", "Tokyo Mule", 
+            "Sake Margarita", "Lychee Sake Martini", "Sake Lemonade", "Sake Spritzer", "Sake Collins", 
+            "Green Tea Sake", "Wasabi Martini", "Ginger Sake Smash", "Ume Highball", "Sake Mojito", 
+            "Sake Negroni", "Matcha Sake", "Grapefruit Sake", "Yuzu Mule", "Sake Sangria"
+        ],
+        "Brandy": [
+            "Sidecar", "Brandy Alexander", "Hot Toddy", "Brandy Sour", "Metropolitan", 
+            "Brandy Smash", "Applejack Brandy", "Brandy Daisy", "Vieux Carré", "French Connection", 
+            "Jack Rose", "Corpse Reviver", "Brandy Flip", "Brandy Crusta", "Brandy Collins", 
+            "Mulled Brandy", "Brandy Old Fashioned", "Between the Sheets", "Champs-Elysées", "Pisco Sour"
+        ],
+        "Red Wine": [
+            "Merlot", "Cabernet Sauvignon", "Rosé", "Shiraz", "Malbec", 
+            "Pinot Noir", "Zinfandel", "Sangiovese", "Chianti", "Tempranillo", 
+            "Grenache", "Syrah", "Cabernet Franc", "Carmenere", "Nero d'Avola", 
+            "Petite Sirah", "Pinotage", "Barbera", "Primitivo", "Mourvedre"
+        ],
+        "White Wine": [
+            "Chardonnay", "Pinot Grigio", "Rosé", "Sauvignon Blanc", "Riesling", 
+            "Moscato", "Viognier", "Chenin Blanc", "Gewürztraminer", "Albariño", 
+            "Verdelho", "Vermentino", "Pinot Blanc", "Torrontés", "Marsanne", 
+            "Grüner Veltliner", "Trebbiano", "Fiano", "Chablis", "Orvieto"
+        ],
+        "Beer": [
+            "Pale Ale", "IPA", "Stout", "Lager", "Porter", 
+            "Pilsner", "Saison", "Bock", "Amber Ale", "Witbier", 
+            "Weissbier", "Barleywine", "Belgian Ale", "Cream Ale", "Hefeweizen", 
+            "Kolsch", "Dunkel", "Brown Ale", "Imperial Stout", "Double IPA"
+        ],
+        "Champagne": [
+            "Mimosa", "Bellini", "Kir Royale", "French 75", "Death in the Afternoon", 
+            "Champagne Cocktail", "Poinsettia", "Seelbach", "Buck’s Fizz", "Sparkling Negroni", 
+            "Sorrento Sparkler", "Champagne Punch", "Blushing Bubbly", "Mango Mimosa", "Peach Fizz", 
+            "Lavender Fizz", "Pink Champagne Punch", "Pomegranate Spritz", "Ginger Fizz", "Champagne Julep"
+        ]
+    };
+
+    const cocktailRecipes = {
+        // Bourbon cocktails
+        "Old Fashioned": {
+            ingredients: [
+                "2 oz Bourbon",
+                "1 tsp Sugar",
+                "2 dashes Angostura Bitters",
+                "Splash of Water",
+                "Orange Peel (for garnish)"
+            ],
+            instructions: [
+                "In a glass, muddle the sugar and bitters with a splash of water.",
+                "Add bourbon and ice, then stir gently.",
+                "Garnish with an orange peel."
+            ]
+        },
+        "Whiskey Sour": {
+            ingredients: [
+                "2 oz Bourbon",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Cherry and Orange Slice (for garnish)"
+            ],
+            instructions: [
+                "Shake bourbon, lemon juice, and simple syrup with ice.",
+                "Strain into a glass over ice.",
+                "Garnish with a cherry and orange slice."
+            ]
+        },
+        "Mint Julep": {
+            ingredients: [
+                "2 oz Bourbon",
+                "1/2 oz Simple Syrup",
+                "8-10 Mint Leaves",
+                "Crushed Ice",
+                "Mint Sprig (for garnish)"
+            ],
+            instructions: [
+                "Muddle mint leaves with simple syrup in a glass.",
+                "Fill with crushed ice and add bourbon.",
+                "Stir gently and garnish with mint sprig."
+            ]
+        },
+        "Boulevardier": {
+            ingredients: [
+                "1 oz Bourbon",
+                "1 oz Sweet Vermouth",
+                "1 oz Campari",
+                "Orange Peel (for garnish)"
+            ],
+            instructions: [
+                "Stir all ingredients with ice.",
+                "Strain into a glass over ice.",
+                "Garnish with orange peel."
+            ]
+        },
+        "Manhattan": {
+            ingredients: [
+                "2 oz Bourbon",
+                "1 oz Sweet Vermouth",
+                "2 dashes Angostura Bitters",
+                "Cherry (for garnish)"
+            ],
+            instructions: [
+                "Stir all ingredients with ice.",
+                "Strain into a chilled glass.",
+                "Garnish with cherry."
+            ]
+        },
+        "Bourbon Smash": {
+            ingredients: [
+                "2 oz Bourbon",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "6-8 Mint Leaves"
+            ],
+            instructions: [
+                "Muddle mint with lemon juice and simple syrup.",
+                "Add bourbon and ice, shake.",
+                "Strain over ice."
+            ]
+        },
+        "Kentucky Mule": {
+            ingredients: [
+                "2 oz Bourbon",
+                "1/2 oz Lime Juice",
+                "Ginger Beer (to top)",
+                "Lime Wedge (for garnish)"
+            ],
+            instructions: [
+                "Combine bourbon and lime juice in a mug with ice.",
+                "Top with ginger beer and stir.",
+                "Garnish with lime wedge."
+            ]
+        },
+        "Gold Rush": {
+            ingredients: [
+                "2 oz Bourbon",
+                "3/4 oz Honey Syrup",
+                "3/4 oz Lemon Juice"
+            ],
+            instructions: [
+                "Shake all ingredients with ice.",
+                "Strain into a glass over ice."
+            ]
+        },
+        "Brown Derby": {
+            ingredients: [
+                "1 1/2 oz Bourbon",
+                "1 oz Grapefruit Juice",
+                "1/2 oz Honey Syrup"
+            ],
+            instructions: [
+                "Shake all ingredients with ice.",
+                "Strain into a chilled glass."
+            ]
+        },
+        "Hot Toddy": {
+            ingredients: [
+                "2 oz Bourbon",
+                "1 tbsp Honey",
+                "1/2 oz Lemon Juice",
+                "Hot Water (to top)",
+                "Lemon Slice (for garnish)"
+            ],
+            instructions: [
+                "Combine bourbon, honey, and lemon in a mug.",
+                "Top with hot water and stir.",
+                "Garnish with lemon slice."
+            ]
+        },
+        "Bourbon and Coke": {
+            ingredients: [
+                "2 oz Bourbon",
+                "Coca-Cola (to top)",
+                "Lime Wedge (optional)"
+            ],
+            instructions: [
+                "Pour bourbon over ice in a glass.",
+                "Top with Coca-Cola and stir gently."
+            ]
+        },
+        "John Collins": {
+            ingredients: [
+                "2 oz Bourbon",
+                "1 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Soda Water (to top)"
+            ],
+            instructions: [
+                "Shake bourbon, lemon, and syrup with ice.",
+                "Strain into a glass over ice, top with soda."
+            ]
+        },
+        "New York Sour": {
+            ingredients: [
+                "2 oz Bourbon",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "1/2 oz Red Wine (float)"
+            ],
+            instructions: [
+                "Shake bourbon, lemon, and syrup with ice.",
+                "Strain over ice, float red wine on top."
+            ]
+        },
+        "Sazerac": {
+            ingredients: [
+                "2 oz Bourbon",
+                "1 tsp Sugar",
+                "3 dashes Peychaud's Bitters",
+                "Absinthe Rinse",
+                "Lemon Peel"
+            ],
+            instructions: [
+                "Rinse glass with absinthe.",
+                "Muddle sugar and bitters, add bourbon, stir with ice.",
+                "Strain into glass, garnish with lemon peel."
+            ]
+        },
+        "Bourbon Highball": {
+            ingredients: [
+                "2 oz Bourbon",
+                "Soda Water (to top)"
+            ],
+            instructions: [
+                "Pour bourbon over ice in a glass.",
+                "Top with soda water and stir gently."
+            ]
+        },
+        "Red Hook": {
+            ingredients: [
+                "2 oz Bourbon",
+                "1/2 oz Maraschino Liqueur",
+                "1/2 oz Punt e Mes"
+            ],
+            instructions: [
+                "Stir all ingredients with ice.",
+                "Strain into a chilled glass."
+            ]
+        },
+        "Paper Plane": {
+            ingredients: [
+                "3/4 oz Bourbon",
+                "3/4 oz Aperol",
+                "3/4 oz Amaro Nonino",
+                "3/4 oz Lemon Juice"
+            ],
+            instructions: [
+                "Shake all ingredients with ice.",
+                "Strain into a chilled glass."
+            ]
+        },
+        "Whiskey Rickey": {
+            ingredients: [
+                "2 oz Bourbon",
+                "1/2 oz Lime Juice",
+                "Soda Water (to top)"
+            ],
+            instructions: [
+                "Combine bourbon and lime in a glass with ice.",
+                "Top with soda and stir."
+            ]
+        },
+        "Bourbon Hot Chocolate": {
+            ingredients: [
+                "2 oz Bourbon",
+                "Hot Chocolate (to top)",
+                "Whipped Cream (optional)"
+            ],
+            instructions: [
+                "Pour bourbon into a mug.",
+                "Top with hot chocolate and stir."
+            ]
+        },
+
+        // Scotch cocktails
+        "Rob Roy": {
+            ingredients: [
+                "2 oz Scotch",
+                "1 oz Sweet Vermouth",
+                "2 dashes Angostura Bitters",
+                "Cherry (for garnish)"
+            ],
+            instructions: [
+                "Stir all ingredients with ice.",
+                "Strain into a chilled glass.",
+                "Garnish with cherry."
+            ]
+        },
+        "Rusty Nail": {
+            ingredients: [
+                "1 1/2 oz Scotch",
+                "3/4 oz Drambuie"
+            ],
+            instructions: [
+                "Stir with ice and strain over ice in a glass."
+            ]
+        },
+        "Penicillin": {
+            ingredients: [
+                "2 oz Blended Scotch",
+                "3/4 oz Lemon Juice",
+                "3/4 oz Honey-Ginger Syrup",
+                "1/4 oz Islay Scotch (float)"
+            ],
+            instructions: [
+                "Shake blended scotch, lemon, syrup with ice.",
+                "Strain over ice, float Islay scotch."
+            ]
+        },
+        "Blood and Sand": {
+            ingredients: [
+                "3/4 oz Scotch",
+                "3/4 oz Sweet Vermouth",
+                "3/4 oz Cherry Heering",
+                "3/4 oz Orange Juice",
+                "Orange Peel (garnish)"
+            ],
+            instructions: [
+                "Shake all ingredients with ice.",
+                "Strain into a chilled glass.",
+                "Garnish with orange peel."
+            ]
+        },
+        "Scotch and Soda": {
+            ingredients: [
+                "2 oz Scotch",
+                "Soda Water (to top)"
+            ],
+            instructions: [
+                "Pour scotch over ice in a glass.",
+                "Top with soda and stir gently."
+            ]
+        },
+        "The Godfather": {
+            ingredients: [
+                "1 1/2 oz Scotch",
+                "3/4 oz Amaretto"
+            ],
+            instructions: [
+                "Stir with ice and strain over ice."
+            ]
+        },
+        "Mamie Taylor": {
+            ingredients: [
+                "2 oz Scotch",
+                "1/2 oz Lime Juice",
+                "Ginger Beer (to top)",
+                "Lime Wedge (garnish)"
+            ],
+            instructions: [
+                "Combine scotch and lime in a glass with ice.",
+                "Top with ginger beer and stir.",
+                "Garnish with lime."
+            ]
+        },
+        "Scotch Cobbler": {
+            ingredients: [
+                "2 oz Scotch",
+                "1/2 oz Orange Liqueur",
+                "Fruit slices"
+            ],
+            instructions: [
+                "Muddle fruit, add scotch and liqueur, shake with ice.",
+                "Strain over crushed ice."
+            ]
+        },
+        "Highland Mule": {
+            ingredients: [
+                "2 oz Scotch",
+                "1/2 oz Lime Juice",
+                "Ginger Beer (to top)"
+            ],
+            instructions: [
+                "Combine scotch and lime in a mug with ice.",
+                "Top with ginger beer."
+            ]
+        },
+        "Whiskey Fix": {
+            ingredients: [
+                "2 oz Scotch",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup"
+            ],
+            instructions: [
+                "Shake with ice, strain over crushed ice."
+            ]
+        },
+        "Smoky Martini": {
+            ingredients: [
+                "2 1/2 oz Scotch",
+                "1/2 oz Dry Vermouth",
+                "Lemon Twist"
+            ],
+            instructions: [
+                "Stir with ice, strain into glass.",
+                "Garnish with lemon twist."
+            ]
+        },
+        "Rusty Sazerac": {
+            ingredients: [
+                "2 oz Scotch",
+                "1 tsp Sugar",
+                "Peychaud's Bitters",
+                "Absinthe Rinse"
+            ],
+            instructions: [
+                "Similar to Sazerac, using Scotch."
+            ]
+        },
+        "Whiskey Daisy": {
+            ingredients: [
+                "2 oz Scotch",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Soda (splash)"
+            ],
+            instructions: [
+                "Shake with ice, strain, top with soda."
+            ]
+        },
+        "Blushing Monarch": {
+            ingredients: [
+                "Recipe not found in search, use default."
+            ],
+            instructions: [
+                "Enjoy responsibly."
+            ]
+        },
+        "The Duke": {
+            ingredients: [
+                "Recipe not found in search, use default."
+            ],
+            instructions: [
+                "Enjoy responsibly."
+            ]
+        },
+        "The Crobsy": {
+            ingredients: [
+                "Recipe not found in search, use default."
+            ],
+            instructions: [
+                "Enjoy responsibly."
+            ]
+        },
+        "Widow’s Kiss": {
+            ingredients: [
+                "1 1/2 oz Calvados (adapt to Scotch if needed)",
+                "1/2 oz Chartreuse",
+                "1/2 oz Benedictine",
+                "Bitters"
+            ],
+            instructions: [
+                "Stir with ice, strain."
+            ]
+        },
+        "Bobby Burns": {
+            ingredients: [
+                "2 oz Scotch",
+                "1 oz Sweet Vermouth",
+                "1/2 oz Benedictine"
+            ],
+            instructions: [
+                "Stir with ice, strain."
+            ]
+        },
+        "Fog Cutter": {
+            ingredients: [
+                "2 oz Rum (adapt), Brandy, Gin, Sherry",
+                "Citrus juices"
+            ],
+            instructions: [
+                "Shake, strain over ice."
+            ]
+        },
+
+        // Tequila cocktails
+        "Margarita": {
+            ingredients: [
+                "2 oz Tequila",
+                "1 oz Lime Juice",
+                "1 oz Triple Sec",
+                "Salt (for rim)"
+            ],
+            instructions: [
+                "Rim glass with salt.",
+                "Shake tequila, lime, triple sec with ice.",
+                "Strain over ice."
+            ]
+        },
+        "Paloma": {
+            ingredients: [
+                "2 oz Tequila",
+                "1/2 oz Lime Juice",
+                "Grapefruit Soda (to top)",
+                "Lime Wedge"
+            ],
+            instructions: [
+                "Combine tequila and lime with ice.",
+                "Top with grapefruit soda.",
+                "Garnish with lime."
+            ]
+        },
+        "Tequila Sunrise": {
+            ingredients: [
+                "2 oz Tequila",
+                "4 oz Orange Juice",
+                "1/2 oz Grenadine"
+            ],
+            instructions: [
+                "Pour tequila and orange juice over ice.",
+                "Sink grenadine to bottom."
+            ]
+        },
+        "El Diablo": {
+            ingredients: [
+                "1 1/2 oz Tequila",
+                "1/2 oz Crème de Cassis",
+                "1/2 oz Lime Juice",
+                "Ginger Beer (to top)"
+            ],
+            instructions: [
+                "Shake tequila, cassis, lime with ice.",
+                "Strain over ice, top with ginger beer."
+            ]
+        },
+        "Tequila Collins": {
+            ingredients: [
+                "2 oz Tequila",
+                "1 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Shake tequila, lemon, syrup with ice.",
+                "Strain over ice, top with soda."
+            ]
+        },
+        "Mexican Mule": {
+            ingredients: [
+                "2 oz Tequila",
+                "1/2 oz Lime Juice",
+                "Ginger Beer (to top)"
+            ],
+            instructions: [
+                "Combine tequila and lime with ice.",
+                "Top with ginger beer."
+            ]
+        },
+        "Batanga": {
+            ingredients: [
+                "2 oz Tequila",
+                "1/2 oz Lime Juice",
+                "Cola (to top)",
+                "Salt (rim)"
+            ],
+            instructions: [
+                "Rim with salt, add tequila and lime over ice.",
+                "Top with cola."
+            ]
+        },
+        "Tequila Smash": {
+            ingredients: [
+                "2 oz Tequila",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Mint Leaves"
+            ],
+            instructions: [
+                "Muddle mint, shake with other ingredients.",
+                "Strain over ice."
+            ]
+        },
+        "Tequila Old Fashioned": {
+            ingredients: [
+                "2 oz Tequila",
+                "1 tsp Agave Syrup",
+                "2 dashes Bitters"
+            ],
+            instructions: [
+                "Stir with ice, strain over ice."
+            ]
+        },
+        "Ranch Water": {
+            ingredients: [
+                "2 oz Tequila",
+                "1/2 oz Lime Juice",
+                "Sparkling Water (to top)"
+            ],
+            instructions: [
+                "Combine tequila and lime with ice.",
+                "Top with sparkling water."
+            ]
+        },
+        "La Rosita": {
+            ingredients: [
+                "1 1/2 oz Tequila",
+                "1/2 oz Sweet Vermouth",
+                "1/2 oz Dry Vermouth",
+                "1/2 oz Campari"
+            ],
+            instructions: [
+                "Stir with ice, strain."
+            ]
+        },
+        "Siesta": {
+            ingredients: [
+                "2 oz Tequila",
+                "3/4 oz Lime Juice",
+                "3/4 oz Grapefruit Juice",
+                "1/2 oz Simple Syrup",
+                "1/4 oz Campari"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Tequila Sour": {
+            ingredients: [
+                "2 oz Tequila",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Tequila Tonic": {
+            ingredients: [
+                "2 oz Tequila",
+                "Tonic Water (to top)"
+            ],
+            instructions: [
+                "Pour tequila over ice, top with tonic."
+            ]
+        },
+        "Bloody Maria": {
+            ingredients: [
+                "2 oz Tequila",
+                "4 oz Tomato Juice",
+                "1/2 oz Lemon Juice",
+                "Worcestershire, Hot Sauce, Salt, Pepper"
+            ],
+            instructions: [
+                "Build in glass over ice, stir."
+            ]
+        },
+        "Matador": {
+            ingredients: [
+                "1 1/2 oz Tequila",
+                "3 oz Pineapple Juice",
+                "1/2 oz Lime Juice"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Juan Collins": {
+            ingredients: [
+                "2 oz Tequila",
+                "1 oz Lemon Juice",
+                "1 tsp Sugar",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Shake tequila, lemon, sugar with ice.",
+                "Strain over ice, top with soda."
+            ]
+        },
+        "Tequila Negroni": {
+            ingredients: [
+                "1 oz Tequila",
+                "1 oz Campari",
+                "1 oz Sweet Vermouth"
+            ],
+            instructions: [
+                "Stir with ice, strain over ice."
+            ]
+        },
+        "Pepino": {
+            ingredients: [
+                "2 oz Tequila",
+                "1 oz Cucumber Juice",
+                "1/2 oz Lime Juice",
+                "1/2 oz Simple Syrup"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Tequila Sazerac": {
+            ingredients: [
+                "2 oz Tequila",
+                "1 tsp Sugar",
+                "Peychaud's Bitters",
+                "Absinthe Rinse"
+            ],
+            instructions: [
+                "Similar to Sazerac."
+            ]
+        },
+
+        // Vodka cocktails
+        "Bloody Mary": {
+            ingredients: [
+                "1 1/2 oz Vodka",
+                "3 oz Tomato Juice",
+                "1/2 oz Lemon Juice",
+                "Worcestershire, Hot Sauce, Salt, Pepper",
+                "Celery (garnish)"
+            ],
+            instructions: [
+                "Build in glass over ice, stir.",
+                "Garnish with celery."
+            ]
+        },
+        "Moscow Mule": {
+            ingredients: [
+                "2 oz Vodka",
+                "1/2 oz Lime Juice",
+                "Ginger Beer (to top)",
+                "Lime Wedge"
+            ],
+            instructions: [
+                "Combine vodka and lime with ice.",
+                "Top with ginger beer.",
+                "Garnish with lime."
+            ]
+        },
+        "Cosmopolitan": {
+            ingredients: [
+                "1 1/2 oz Vodka",
+                "1 oz Cranberry Juice",
+                "1/2 oz Triple Sec",
+                "1/2 oz Lime Juice"
+            ],
+            instructions: [
+                "Shake with ice, strain into glass."
+            ]
+        },
+        "Vodka Martini": {
+            ingredients: [
+                "2 1/2 oz Vodka",
+                "1/2 oz Dry Vermouth",
+                "Olive or Lemon Twist"
+            ],
+            instructions: [
+                "Stir with ice, strain.",
+                "Garnish."
+            ]
+        },
+        "White Russian": {
+            ingredients: [
+                "1 1/2 oz Vodka",
+                "1 oz Coffee Liqueur",
+                "1 oz Heavy Cream"
+            ],
+            instructions: [
+                "Build over ice, stir."
+            ]
+        },
+        "Black Russian": {
+            ingredients: [
+                "1 1/2 oz Vodka",
+                "3/4 oz Coffee Liqueur"
+            ],
+            instructions: [
+                "Build over ice, stir."
+            ]
+        },
+        "Sea Breeze": {
+            ingredients: [
+                "1 1/2 oz Vodka",
+                "4 oz Cranberry Juice",
+                "1 oz Grapefruit Juice"
+            ],
+            instructions: [
+                "Build over ice, stir."
+            ]
+        },
+        "Screwdriver": {
+            ingredients: [
+                "1 1/2 oz Vodka",
+                "Orange Juice (to top)"
+            ],
+            instructions: [
+                "Pour vodka over ice, top with orange juice."
+            ]
+        },
+        "Harvey Wallbanger": {
+            ingredients: [
+                "1 1/2 oz Vodka",
+                "4 oz Orange Juice",
+                "1/2 oz Galliano (float)"
+            ],
+            instructions: [
+                "Build vodka and orange over ice, float Galliano."
+            ]
+        },
+        "Cape Cod": {
+            ingredients: [
+                "1 1/2 oz Vodka",
+                "Cranberry Juice (to top)"
+            ],
+            instructions: [
+                "Pour vodka over ice, top with cranberry."
+            ]
+        },
+        "Vodka Collins": {
+            ingredients: [
+                "2 oz Vodka",
+                "1 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Shake vodka, lemon, syrup with ice.",
+                "Strain over ice, top with soda."
+            ]
+        },
+        "Vodka Gimlet": {
+            ingredients: [
+                "2 oz Vodka",
+                "3/4 oz Lime Juice",
+                "3/4 oz Simple Syrup"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Vodka Tonic": {
+            ingredients: [
+                "2 oz Vodka",
+                "Tonic Water (to top)"
+            ],
+            instructions: [
+                "Pour vodka over ice, top with tonic."
+            ]
+        },
+        "Espresso Martini": {
+            ingredients: [
+                "2 oz Vodka",
+                "1 oz Coffee Liqueur",
+                "1 oz Espresso"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Appletini": {
+            ingredients: [
+                "1 1/2 oz Vodka",
+                "1 oz Apple Liqueur",
+                "1/2 oz Lemon Juice"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Blue Lagoon": {
+            ingredients: [
+                "1 oz Vodka",
+                "1 oz Blue Curacao",
+                "Lemonade (to top)"
+            ],
+            instructions: [
+                "Build over ice, stir."
+            ]
+        },
+        "Kamikaze": {
+            ingredients: [
+                "1 oz Vodka",
+                "1 oz Triple Sec",
+                "1 oz Lime Juice"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "French Martini": {
+            ingredients: [
+                "2 oz Vodka",
+                "1/2 oz Chambord",
+                "1 1/2 oz Pineapple Juice"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Sex on the Beach": {
+            ingredients: [
+                "1 oz Vodka",
+                "1 oz Peach Schnapps",
+                "2 oz Cranberry Juice",
+                "2 oz Orange Juice"
+            ],
+            instructions: [
+                "Build over ice, stir."
+            ]
+        },
+        "Lemon Drop": {
+            ingredients: [
+                "2 oz Vodka",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Sugar Rim"
+            ],
+            instructions: [
+                "Shake with ice, strain into sugar-rimmed glass."
+            ]
+        },
+
+        // Rum cocktails
+        "Daiquiri": {
+            ingredients: [
+                "2 oz Rum",
+                "1 oz Lime Juice",
+                "3/4 oz Simple Syrup"
+            ],
+            instructions: [
+                "Shake with ice, strain into glass."
+            ]
+        },
+        "Mai Tai": {
+            ingredients: [
+                "2 oz Rum",
+                "1 oz Lime Juice",
+                "1/2 oz Orange Curacao",
+                "1/2 oz Orgeat",
+                "Mint (garnish)"
+            ],
+            instructions: [
+                "Shake with ice, strain over crushed ice.",
+                "Garnish with mint."
+            ]
+        },
+        "Pina Colada": {
+            ingredients: [
+                "2 oz Rum",
+                "2 oz Pineapple Juice",
+                "1 oz Coconut Cream"
+            ],
+            instructions: [
+                "Blend with ice or shake, pour over ice."
+            ]
+        },
+        "Mojito": {
+            ingredients: [
+                "2 oz Rum",
+                "1 oz Lime Juice",
+                "2 tsp Sugar",
+                "6-8 Mint Leaves",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Muddle mint and sugar, add rum and lime.",
+                "Add ice, top with soda."
+            ]
+        },
+        "Dark ‘n’ Stormy": {
+            ingredients: [
+                "2 oz Dark Rum",
+                "1/2 oz Lime Juice",
+                "Ginger Beer (to top)"
+            ],
+            instructions: [
+                "Build over ice, top with ginger beer."
+            ]
+        },
+        "Rum Punch": {
+            ingredients: [
+                "2 oz Rum",
+                "1 oz Orange Juice",
+                "1 oz Pineapple Juice",
+                "1/2 oz Lime Juice",
+                "1/2 oz Grenadine"
+            ],
+            instructions: [
+                "Shake with ice, strain over ice."
+            ]
+        },
+        "Hurricane": {
+            ingredients: [
+                "2 oz Light Rum",
+                "2 oz Dark Rum",
+                "1 oz Passion Fruit Juice",
+                "1 oz Orange Juice",
+                "1/2 oz Lime Juice",
+                "1/2 oz Simple Syrup",
+                "1/2 oz Grenadine"
+            ],
+            instructions: [
+                "Shake with ice, strain over ice."
+            ]
+        },
+        "Rum Swizzle": {
+            ingredients: [
+                "2 oz Rum",
+                "1 oz Lime Juice",
+                "1 oz Pineapple Juice",
+                "1/2 oz Falernum"
+            ],
+            instructions: [
+                "Swizzle with crushed ice."
+            ]
+        },
+        "Planter’s Punch": {
+            ingredients: [
+                "2 oz Dark Rum",
+                "1 oz Orange Juice",
+                "1 oz Pineapple Juice",
+                "1/2 oz Lime Juice",
+                "Dash Grenadine"
+            ],
+            instructions: [
+                "Shake with ice, strain over ice."
+            ]
+        },
+        "Cuba Libre": {
+            ingredients: [
+                "2 oz Rum",
+                "1/2 oz Lime Juice",
+                "Cola (to top)"
+            ],
+            instructions: [
+                "Build over ice, top with cola."
+            ]
+        },
+        "Bahama Mama": {
+            ingredients: [
+                "1 oz Rum",
+                "1 oz Coconut Rum",
+                "1 oz Pineapple Juice",
+                "1 oz Orange Juice",
+                "1/2 oz Grenadine"
+            ],
+            instructions: [
+                "Shake with ice, strain over ice."
+            ]
+        },
+        "Painkiller": {
+            ingredients: [
+                "2 oz Rum",
+                "4 oz Pineapple Juice",
+                "1 oz Orange Juice",
+                "1 oz Coconut Cream",
+                "Nutmeg (garnish)"
+            ],
+            instructions: [
+                "Shake with ice, pour over ice.",
+                "Garnish with nutmeg."
+            ]
+        },
+        "Zombie": {
+            ingredients: [
+                "1 oz Light Rum",
+                "1 oz Dark Rum",
+                "1 oz Overproof Rum",
+                "1 oz Lime Juice",
+                "1 oz Grapefruit Juice",
+                "1 oz Falernum",
+                "Dash Absinthe",
+                "Grenadine"
+            ],
+            instructions: [
+                "Shake with ice, strain over ice."
+            ]
+        },
+        "Rum Old Fashioned": {
+            ingredients: [
+                "2 oz Rum",
+                "1 tsp Sugar",
+                "2 dashes Bitters"
+            ],
+            instructions: [
+                "Stir with ice, strain over ice."
+            ]
+        },
+        "Jungle Bird": {
+            ingredients: [
+                "1 1/2 oz Dark Rum",
+                "3/4 oz Campari",
+                "1 1/2 oz Pineapple Juice",
+                "1/2 oz Lime Juice",
+                "1/2 oz Simple Syrup"
+            ],
+            instructions: [
+                "Shake with ice, strain over ice."
+            ]
+        },
+        "Rum Runners": {
+            ingredients: [
+                "1 oz Light Rum",
+                "1 oz Dark Rum",
+                "1 oz Banana Liqueur",
+                "1 oz Blackberry Liqueur",
+                "1 oz Orange Juice",
+                "1 oz Pineapple Juice",
+                "Dash Grenadine"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Corn ‘n’ Oil": {
+            ingredients: [
+                "2 oz Dark Rum",
+                "1/2 oz Falernum",
+                "1/2 oz Lime Juice",
+                "Dash Bitters"
+            ],
+            instructions: [
+                "Stir with ice, strain over ice."
+            ]
+        },
+        "Shark Bite": {
+            ingredients: [
+                "1 1/2 oz Rum",
+                "3 oz Orange Juice",
+                "1/2 oz Blue Curacao",
+                "Dash Grenadine"
+            ],
+            instructions: [
+                "Build over ice, drop grenadine."
+            ]
+        },
+        "Hemingway Daiquiri": {
+            ingredients: [
+                "2 oz Rum",
+                "3/4 oz Lime Juice",
+                "1/2 oz Grapefruit Juice",
+                "1/2 oz Maraschino Liqueur"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+
+        // Gin cocktails
+        "Gin & Tonic": {
+            ingredients: [
+                "2 oz Gin",
+                "Tonic Water (to top)",
+                "Lime Wedge"
+            ],
+            instructions: [
+                "Pour gin over ice, top with tonic.",
+                "Garnish with lime."
+            ]
+        },
+        "Negroni": {
+            ingredients: [
+                "1 oz Gin",
+                "1 oz Campari",
+                "1 oz Sweet Vermouth",
+                "Orange Peel"
+            ],
+            instructions: [
+                "Stir with ice, strain over ice.",
+                "Garnish with orange peel."
+            ]
+        },
+        "Martini": {
+            ingredients: [
+                "2 1/2 oz Gin",
+                "1/2 oz Dry Vermouth",
+                "Olive or Lemon Twist"
+            ],
+            instructions: [
+                "Stir with ice, strain.",
+                "Garnish."
+            ]
+        },
+        "Tom Collins": {
+            ingredients: [
+                "2 oz Gin",
+                "1 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Shake gin, lemon, syrup with ice.",
+                "Strain over ice, top with soda."
+            ]
+        },
+        "French 75": {
+            ingredients: [
+                "1 oz Gin",
+                "1/2 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Champagne (to top)"
+            ],
+            instructions: [
+                "Shake gin, lemon, syrup with ice.",
+                "Strain into flute, top with champagne."
+            ]
+        },
+        "Gimlet": {
+            ingredients: [
+                "2 oz Gin",
+                "3/4 oz Lime Juice",
+                "3/4 oz Simple Syrup"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Bee's Knees": {
+            ingredients: [
+                "2 oz Gin",
+                "3/4 oz Lemon Juice",
+                "3/4 oz Honey Syrup"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Southside": {
+            ingredients: [
+                "2 oz Gin",
+                "1 oz Lemon Juice",
+                "3/4 oz Simple Syrup",
+                "Mint Leaves"
+            ],
+            instructions: [
+                "Muddle mint, shake with other ingredients.",
+                "Strain over ice."
+            ]
+        },
+        "Gin Fizz": {
+            ingredients: [
+                "2 oz Gin",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Soda (to top)",
+                "Egg White (optional)"
+            ],
+            instructions: [
+                "Shake without ice, then with ice.",
+                "Strain, top with soda."
+            ]
+        },
+        "Gin Rickey": {
+            ingredients: [
+                "2 oz Gin",
+                "1/2 oz Lime Juice",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Combine gin and lime with ice.",
+                "Top with soda."
+            ]
+        },
+        "Corpse Reviver #2": {
+            ingredients: [
+                "3/4 oz Gin",
+                "3/4 oz Lillet Blanc",
+                "3/4 oz Triple Sec",
+                "3/4 oz Lemon Juice",
+                "Absinthe Rinse"
+            ],
+            instructions: [
+                "Rinse glass with absinthe.",
+                "Shake other ingredients, strain."
+            ]
+        },
+        "Gin Basil Smash": {
+            ingredients: [
+                "2 oz Gin",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "8-10 Basil Leaves"
+            ],
+            instructions: [
+                "Muddle basil, shake with other ingredients.",
+                "Strain over ice."
+            ]
+        },
+        "Clover Club": {
+            ingredients: [
+                "2 oz Gin",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Raspberry Syrup",
+                "Egg White"
+            ],
+            instructions: [
+                "Dry shake, then shake with ice.",
+                "Strain."
+            ]
+        },
+        "Vesper": {
+            ingredients: [
+                "3 oz Gin",
+                "1 oz Vodka",
+                "1/2 oz Lillet Blanc",
+                "Lemon Twist"
+            ],
+            instructions: [
+                "Shake with ice, strain.",
+                "Garnish with lemon."
+            ]
+        },
+        "Martinez": {
+            ingredients: [
+                "1 1/2 oz Gin",
+                "1 1/2 oz Sweet Vermouth",
+                "1/4 oz Maraschino Liqueur",
+                "2 dashes Bitters"
+            ],
+            instructions: [
+                "Stir with ice, strain."
+            ]
+        },
+        "Aviation": {
+            ingredients: [
+                "2 oz Gin",
+                "1/2 oz Maraschino Liqueur",
+                "1/4 oz Crème de Violette",
+                "3/4 oz Lemon Juice"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Singapore Sling": {
+            ingredients: [
+                "1 1/2 oz Gin",
+                "1/2 oz Cherry Brandy",
+                "1/4 oz Triple Sec",
+                "1/4 oz Benedictine",
+                "4 oz Pineapple Juice",
+                "1/2 oz Lime Juice",
+                "Dash Grenadine",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Shake without soda, strain over ice, top with soda."
+            ]
+        },
+        "Pegu Club": {
+            ingredients: [
+                "2 oz Gin",
+                "3/4 oz Orange Curacao",
+                "1/2 oz Lime Juice",
+                "2 dashes Bitters"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Army & Navy": {
+            ingredients: [
+                "2 oz Gin",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Orgeat"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Last Word": {
+            ingredients: [
+                "3/4 oz Gin",
+                "3/4 oz Lime Juice",
+                "3/4 oz Green Chartreuse",
+                "3/4 oz Maraschino Liqueur"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+
+        // Sake cocktails
+        "Saketini": {
+            ingredients: [
+                "2 1/2 oz Sake",
+                "1 oz Gin or Vodka",
+                "Cucumber Slice (garnish)"
+            ],
+            instructions: [
+                "Stir with ice, strain.",
+                "Garnish with cucumber."
+            ]
+        },
+        "Sake Bomb": {
+            ingredients: [
+                "1 shot Sake",
+                "1 pint Beer"
+            ],
+            instructions: [
+                "Drop sake shot into beer, drink quickly."
+            ]
+        },
+        "Plum Sake": {
+            ingredients: [
+                "3 oz Sake",
+                "1 oz Plum Wine",
+                "Plum (garnish)"
+            ],
+            instructions: [
+                "Stir with ice, strain."
+            ]
+        },
+        "Cherry Blossom": {
+            ingredients: [
+                "2 oz Sake",
+                "1 oz Cherry Liqueur",
+                "1/2 oz Lemon Juice"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Tokyo Mule": {
+            ingredients: [
+                "2 oz Sake",
+                "1/2 oz Lime Juice",
+                "Ginger Beer (to top)"
+            ],
+            instructions: [
+                "Build over ice, top with ginger beer."
+            ]
+        },
+        "Sake Margarita": {
+            ingredients: [
+                "2 oz Sake",
+                "1 oz Tequila",
+                "1 oz Lime Juice",
+                "1/2 oz Triple Sec"
+            ],
+            instructions: [
+                "Shake with ice, strain over ice."
+            ]
+        },
+        "Lychee Sake Martini": {
+            ingredients: [
+                "2 oz Sake",
+                "1 oz Vodka",
+                "1 oz Lychee Syrup",
+                "Lychee (garnish)"
+            ],
+            instructions: [
+                "Shake with ice, strain.",
+                "Garnish with lychee."
+            ]
+        },
+        "Sake Lemonade": {
+            ingredients: [
+                "3 oz Sake",
+                "2 oz Lemonade",
+                "Lemon Slice"
+            ],
+            instructions: [
+                "Build over ice, stir."
+            ]
+        },
+        "Sake Spritzer": {
+            ingredients: [
+                "3 oz Sake",
+                "Soda Water (to top)",
+                "Lemon Twist"
+            ],
+            instructions: [
+                "Pour sake over ice, top with soda."
+            ]
+        },
+        "Sake Collins": {
+            ingredients: [
+                "2 oz Sake",
+                "1 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Shake sake, lemon, syrup, strain over ice, top with soda."
+            ]
+        },
+        "Green Tea Sake": {
+            ingredients: [
+                "3 oz Sake",
+                "2 oz Green Tea",
+                "Honey (to taste)"
+            ],
+            instructions: [
+                "Mix warm or cold."
+            ]
+        },
+        "Wasabi Martini": {
+            ingredients: [
+                "2 oz Sake",
+                "1 oz Vodka",
+                "Dash Wasabi"
+            ],
+            instructions: [
+                "Stir with ice, strain."
+            ]
+        },
+        "Ginger Sake Smash": {
+            ingredients: [
+                "2 oz Sake",
+                "1/2 oz Ginger Syrup",
+                "1/2 oz Lime Juice",
+                "Mint"
+            ],
+            instructions: [
+                "Muddle mint, shake, strain."
+            ]
+        },
+        "Ume Highball": {
+            ingredients: [
+                "2 oz Sake",
+                "1 oz Ume Liqueur",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Build over ice, top with soda."
+            ]
+        },
+        "Sake Mojito": {
+            ingredients: [
+                "2 oz Sake",
+                "1 oz Lime Juice",
+                "Mint, Sugar",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Muddle mint and sugar, add sake and lime, top with soda."
+            ]
+        },
+        "Sake Negroni": {
+            ingredients: [
+                "1 oz Sake",
+                "1 oz Gin",
+                "1 oz Campari",
+                "1 oz Sweet Vermouth"
+            ],
+            instructions: [
+                "Stir with ice, strain."
+            ]
+        },
+        "Matcha Sake": {
+            ingredients: [
+                "3 oz Sake",
+                "1 tsp Matcha Powder",
+                "Honey (to taste)"
+            ],
+            instructions: [
+                "Mix matcha with hot water, add sake."
+            ]
+        },
+        "Grapefruit Sake": {
+            ingredients: [
+                "3 oz Sake",
+                "2 oz Grapefruit Juice"
+            ],
+            instructions: [
+                "Build over ice, stir."
+            ]
+        },
+        "Yuzu Mule": {
+            ingredients: [
+                "2 oz Sake",
+                "1/2 oz Yuzu Juice",
+                "Ginger Beer (to top)"
+            ],
+            instructions: [
+                "Build over ice, top with ginger beer."
+            ]
+        },
+        "Sake Sangria": {
+            ingredients: [
+                "4 oz Sake",
+                "Fruit slices",
+                "1 oz Orange Liqueur",
+                "Soda (splash)"
+            ],
+            instructions: [
+                "Mix sake with fruit and liqueur, chill, top with soda."
+            ]
+        },
+
+        // Brandy cocktails
+        "Sidecar": {
+            ingredients: [
+                "2 oz Brandy",
+                "3/4 oz Triple Sec",
+                "3/4 oz Lemon Juice",
+                "Sugar (rim)"
+            ],
+            instructions: [
+                "Rim glass with sugar.",
+                "Shake ingredients with ice, strain."
+            ]
+        },
+        "Brandy Alexander": {
+            ingredients: [
+                "1 oz Brandy",
+                "1 oz Crème de Cacao",
+                "1 oz Heavy Cream",
+                "Nutmeg"
+            ],
+            instructions: [
+                "Shake with ice, strain.",
+                "Garnish with nutmeg."
+            ]
+        },
+        "Brandy Sour": {
+            ingredients: [
+                "2 oz Brandy",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Metropolitan": {
+            ingredients: [
+                "2 oz Brandy",
+                "1 oz Sweet Vermouth",
+                "1/2 tsp Sugar",
+                "2 dashes Bitters"
+            ],
+            instructions: [
+                "Stir with ice, strain."
+            ]
+        },
+        "Brandy Smash": {
+            ingredients: [
+                "2 oz Brandy",
+                "1/2 oz Simple Syrup",
+                "Mint Leaves"
+            ],
+            instructions: [
+                "Muddle mint with syrup, add brandy, shake with ice."
+            ]
+        },
+        "Applejack Brandy": {
+            ingredients: [
+                "2 oz Apple Brandy",
+                "Serve neat or on rocks."
+            ],
+            instructions: [
+                "Pour over ice or neat."
+            ]
+        },
+        "Brandy Daisy": {
+            ingredients: [
+                "2 oz Brandy",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Orange Liqueur",
+                "Soda (splash)"
+            ],
+            instructions: [
+                "Shake without soda, strain, top with soda."
+            ]
+        },
+        "Vieux Carré": {
+            ingredients: [
+                "1 oz Brandy",
+                "1 oz Rye Whiskey",
+                "1 oz Sweet Vermouth",
+                "1/4 oz Benedictine",
+                "Bitters"
+            ],
+            instructions: [
+                "Stir with ice, strain over ice."
+            ]
+        },
+        "French Connection": {
+            ingredients: [
+                "1 1/2 oz Brandy",
+                "1 oz Amaretto"
+            ],
+            instructions: [
+                "Build over ice, stir."
+            ]
+        },
+        "Jack Rose": {
+            ingredients: [
+                "2 oz Apple Brandy",
+                "3/4 oz Lime Juice",
+                "1/2 oz Grenadine"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Corpse Reviver": {
+            ingredients: [
+                "3/4 oz Brandy",
+                "3/4 oz Apple Brandy",
+                "3/4 oz Sweet Vermouth"
+            ],
+            instructions: [
+                "Stir with ice, strain."
+            ]
+        },
+        "Brandy Flip": {
+            ingredients: [
+                "2 oz Brandy",
+                "1 oz Simple Syrup",
+                "Whole Egg",
+                "Nutmeg"
+            ],
+            instructions: [
+                "Dry shake, shake with ice, strain.",
+                "Garnish with nutmeg."
+            ]
+        },
+        "Brandy Crusta": {
+            ingredients: [
+                "2 oz Brandy",
+                "1/2 oz Orange Curacao",
+                "1/2 oz Lemon Juice",
+                "Dash Bitters",
+                "Sugar Rim, Lemon Peel"
+            ],
+            instructions: [
+                "Shake with ice, strain into sugar-rimmed glass."
+            ]
+        },
+        "Brandy Collins": {
+            ingredients: [
+                "2 oz Brandy",
+                "1 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Soda (to top)"
+            ],
+            instructions: [
+                "Shake without soda, strain over ice, top with soda."
+            ]
+        },
+        "Mulled Brandy": {
+            ingredients: [
+                "2 oz Brandy",
+                "Hot Cider or Wine",
+                "Spices"
+            ],
+            instructions: [
+                "Heat cider with spices, add brandy."
+            ]
+        },
+        "Brandy Old Fashioned": {
+            ingredients: [
+                "2 oz Brandy",
+                "1 tsp Sugar",
+                "2 dashes Bitters",
+                "Soda (splash)"
+            ],
+            instructions: [
+                "Muddle sugar and bitters, add brandy and ice, stir."
+            ]
+        },
+        "Between the Sheets": {
+            ingredients: [
+                "1 oz Brandy",
+                "1 oz Rum",
+                "1 oz Triple Sec",
+                "1/2 oz Lemon Juice"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Champs-Elysées": {
+            ingredients: [
+                "1 1/2 oz Brandy",
+                "1/2 oz Chartreuse",
+                "3/4 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Dash Bitters"
+            ],
+            instructions: [
+                "Shake with ice, strain."
+            ]
+        },
+        "Pisco Sour": {
+            ingredients: [
+                "2 oz Pisco",
+                "3/4 oz Lime Juice",
+                "1/2 oz Simple Syrup",
+                "Egg White",
+                "Bitters (dash on top)"
+            ],
+            instructions: [
+                "Dry shake, shake with ice, strain.",
+                "Dash bitters on foam."
+            ]
+        },
+
+        // Red Wine varieties (serving suggestions)
+        "Merlot": {
+            ingredients: [
+                "Merlot wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with grilled meats or pasta."
+            ]
+        },
+        "Cabernet Sauvignon": {
+            ingredients: [
+                "Cabernet Sauvignon wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with steak or rich cheeses."
+            ]
+        },
+        "Rosé": {
+            ingredients: [
+                "Rosé wine"
+            ],
+            instructions: [
+                "Serve chilled with light salads or seafood."
+            ]
+        },
+        "Shiraz": {
+            ingredients: [
+                "Shiraz wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with barbecue or spicy foods."
+            ]
+        },
+        "Malbec": {
+            ingredients: [
+                "Malbec wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with red meats or empanadas."
+            ]
+        },
+        "Pinot Noir": {
+            ingredients: [
+                "Pinot Noir wine"
+            ],
+            instructions: [
+                "Serve slightly chilled with salmon or poultry."
+            ]
+        },
+        "Zinfandel": {
+            ingredients: [
+                "Zinfandel wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with grilled chicken or pizza."
+            ]
+        },
+        "Sangiovese": {
+            ingredients: [
+                "Sangiovese wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with Italian dishes like pasta."
+            ]
+        },
+        "Chianti": {
+            ingredients: [
+                "Chianti wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with tomato-based sauces."
+            ]
+        },
+        "Tempranillo": {
+            ingredients: [
+                "Tempranillo wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with tapas or lamb."
+            ]
+        },
+        "Grenache": {
+            ingredients: [
+                "Grenache wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with roasted vegetables."
+            ]
+        },
+        "Syrah": {
+            ingredients: [
+                "Syrah wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with hearty stews."
+            ]
+        },
+        "Cabernet Franc": {
+            ingredients: [
+                "Cabernet Franc wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with grilled vegetables."
+            ]
+        },
+        "Carmenere": {
+            ingredients: [
+                "Carmenere wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with spicy foods."
+            ]
+        },
+        "Nero d'Avola": {
+            ingredients: [
+                "Nero d'Avola wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with Sicilian dishes."
+            ]
+        },
+        "Petite Sirah": {
+            ingredients: [
+                "Petite Sirah wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with bold meats."
+            ]
+        },
+        "Pinotage": {
+            ingredients: [
+                "Pinotage wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with game meats."
+            ]
+        },
+        "Barbera": {
+            ingredients: [
+                "Barbera wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with pizza or pasta."
+            ]
+        },
+        "Primitivo": {
+            ingredients: [
+                "Primitivo wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with barbecue."
+            ]
+        },
+        "Mourvedre": {
+            ingredients: [
+                "Mourvedre wine"
+            ],
+            instructions: [
+                "Serve at 60-65°F with braised meats."
+            ]
+        },
+
+        // White Wine varieties
+        "Chardonnay": {
+            ingredients: [
+                "Chardonnay wine"
+            ],
+            instructions: [
+                "Serve chilled with roasted chicken or seafood."
+            ]
+        },
+        "Pinot Grigio": {
+            ingredients: [
+                "Pinot Grigio wine"
+            ],
+            instructions: [
+                "Serve chilled with light seafood or salads."
+            ]
+        },
+        "Sauvignon Blanc": {
+            ingredients: [
+                "Sauvignon Blanc wine"
+            ],
+            instructions: [
+                "Serve chilled with goat cheese or fish."
+            ]
+        },
+        "Riesling": {
+            ingredients: [
+                "Riesling wine"
+            ],
+            instructions: [
+                "Serve chilled with spicy Asian food."
+            ]
+        },
+        "Moscato": {
+            ingredients: [
+                "Moscato wine"
+            ],
+            instructions: [
+                "Serve chilled with desserts or fruit."
+            ]
+        },
+        "Viognier": {
+            ingredients: [
+                "Viognier wine"
+            ],
+            instructions: [
+                "Serve chilled with roast pork."
+            ]
+        },
+        "Chenin Blanc": {
+            ingredients: [
+                "Chenin Blanc wine"
+            ],
+            instructions: [
+                "Serve chilled with light dishes."
+            ]
+        },
+        "Gewürztraminer": {
+            ingredients: [
+                "Gewürztraminer wine"
+            ],
+            instructions: [
+                "Serve chilled with aromatic dishes like tagine."
+            ]
+        },
+        "Albariño": {
+            ingredients: [
+                "Albariño wine"
+            ],
+            instructions: [
+                "Serve chilled with seafood."
+            ]
+        },
+        "Verdelho": {
+            ingredients: [
+                "Verdelho wine"
+            ],
+            instructions: [
+                "Serve chilled with light meals."
+            ]
+        },
+        "Vermentino": {
+            ingredients: [
+                "Vermentino wine"
+            ],
+            instructions: [
+                "Serve chilled with fish."
+            ]
+        },
+        "Pinot Blanc": {
+            ingredients: [
+                "Pinot Blanc wine"
+            ],
+            instructions: [
+                "Serve chilled with poultry."
+            ]
+        },
+        "Torrontés": {
+            ingredients: [
+                "Torrontés wine"
+            ],
+            instructions: [
+                "Serve chilled with spicy food."
+            ]
+        },
+        "Marsanne": {
+            ingredients: [
+                "Marsanne wine"
+            ],
+            instructions: [
+                "Serve chilled with rich dishes."
+            ]
+        },
+        "Grüner Veltliner": {
+            ingredients: [
+                "Grüner Veltliner wine"
+            ],
+            instructions: [
+                "Serve chilled with vegetables or pork."
+            ]
+        },
+        "Trebbiano": {
+            ingredients: [
+                "Trebbiano wine"
+            ],
+            instructions: [
+                "Serve chilled with light pasta."
+            ]
+        },
+        "Fiano": {
+            ingredients: [
+                "Fiano wine"
+            ],
+            instructions: [
+                "Serve chilled with seafood."
+            ]
+        },
+        "Chablis": {
+            ingredients: [
+                "Chablis wine"
+            ],
+            instructions: [
+                "Serve chilled with oysters."
+            ]
+        },
+        "Orvieto": {
+            ingredients: [
+                "Orvieto wine"
+            ],
+            instructions: [
+                "Serve chilled with Italian appetizers."
+            ]
+        },
+
+        // Beer styles
+        "Pale Ale": {
+            ingredients: [
+                "Pale Ale beer"
+            ],
+            instructions: [
+                "Serve chilled in a pint glass with pub fare."
+            ]
+        },
+        "IPA": {
+            ingredients: [
+                "IPA beer"
+            ],
+            instructions: [
+                "Serve chilled with spicy or bold foods."
+            ]
+        },
+        "Stout": {
+            ingredients: [
+                "Stout beer"
+            ],
+            instructions: [
+                "Serve at cellar temp with chocolate or oysters."
+            ]
+        },
+        "Lager": {
+            ingredients: [
+                "Lager beer"
+            ],
+            instructions: [
+                "Serve cold with light meals."
+            ]
+        },
+        "Porter": {
+            ingredients: [
+                "Porter beer"
+            ],
+            instructions: [
+                "Serve at cellar temp with barbecue."
+            ]
+        },
+        "Pilsner": {
+            ingredients: [
+                "Pilsner beer"
+            ],
+            instructions: [
+                "Serve cold with seafood."
+            ]
+        },
+        "Saison": {
+            ingredients: [
+                "Saison beer"
+            ],
+            instructions: [
+                "Serve chilled with cheese or poultry."
+            ]
+        },
+        "Bock": {
+            ingredients: [
+                "Bock beer"
+            ],
+            instructions: [
+                "Serve at cellar temp with German dishes."
+            ]
+        },
+        "Amber Ale": {
+            ingredients: [
+                "Amber Ale beer"
+            ],
+            instructions: [
+                "Serve chilled with burgers."
+            ]
+        },
+        "Witbier": {
+            ingredients: [
+                "Witbier beer"
+            ],
+            instructions: [
+                "Serve chilled with citrus or salads."
+            ]
+        },
+        "Weissbier": {
+            ingredients: [
+                "Weissbier beer"
+            ],
+            instructions: [
+                "Serve chilled with Weisswurst."
+            ]
+        },
+        "Barleywine": {
+            ingredients: [
+                "Barleywine beer"
+            ],
+            instructions: [
+                "Serve at room temp as a sipper."
+            ]
+        },
+        "Belgian Ale": {
+            ingredients: [
+                "Belgian Ale beer"
+            ],
+            instructions: [
+                "Serve at cellar temp with mussels."
+            ]
+        },
+        "Cream Ale": {
+            ingredients: [
+                "Cream Ale beer"
+            ],
+            instructions: [
+                "Serve cold with light fare."
+            ]
+        },
+        "Hefeweizen": {
+            ingredients: [
+                "Hefeweizen beer"
+            ],
+            instructions: [
+                "Serve chilled with banana or clove notes."
+            ]
+        },
+        "Kolsch": {
+            ingredients: [
+                "Kolsch beer"
+            ],
+            instructions: [
+                "Serve cold in stange glass with salads."
+            ]
+        },
+        "Dunkel": {
+            ingredients: [
+                "Dunkel beer"
+            ],
+            instructions: [
+                "Serve at cellar temp with hearty foods."
+            ]
+        },
+        "Brown Ale": {
+            ingredients: [
+                "Brown Ale beer"
+            ],
+            instructions: [
+                "Serve chilled with nuts or cheese."
+            ]
+        },
+        "Imperial Stout": {
+            ingredients: [
+                "Imperial Stout beer"
+            ],
+            instructions: [
+                "Serve at room temp with desserts."
+            ]
+        },
+        "Double IPA": {
+            ingredients: [
+                "Double IPA beer"
+            ],
+            instructions: [
+                "Serve chilled with bold flavors."
+            ]
+        },
+
+        // Champagne cocktails
+        "Mimosa": {
+            ingredients: [
+                "2 oz Champagne",
+                "2 oz Orange Juice"
+            ],
+            instructions: [
+                "Pour orange juice into flute, top with champagne."
+            ]
+        },
+        "Bellini": {
+            ingredients: [
+                "2 oz Champagne",
+                "1 oz Peach Puree"
+            ],
+            instructions: [
+                "Pour peach puree into flute, top with champagne."
+            ]
+        },
+        "Kir Royale": {
+            ingredients: [
+                "Champagne (to top)",
+                "1/2 oz Crème de Cassis"
+            ],
+            instructions: [
+                "Pour cassis into flute, top with champagne."
+            ]
+        },
+        "French 75": {
+            ingredients: [
+                "1 oz Gin",
+                "1/2 oz Lemon Juice",
+                "1/2 oz Simple Syrup",
+                "Champagne (to top)"
+            ],
+            instructions: [
+                "Shake gin, lemon, syrup, strain into flute, top with champagne."
+            ]
+        },
+        "Death in the Afternoon": {
+            ingredients: [
+                "Champagne (to top)",
+                "1 oz Absinthe"
+            ],
+            instructions: [
+                "Pour absinthe into flute, top with champagne."
+            ]
+        },
+        "Champagne Cocktail": {
+            ingredients: [
+                "Champagne (to top)",
+                "1 Sugar Cube",
+                "2 dashes Bitters",
+                "Lemon Twist"
+            ],
+            instructions: [
+                "Soak sugar cube with bitters in flute, top with champagne."
+            ]
+        },
+        "Poinsettia": {
+            ingredients: [
+                "Champagne (to top)",
+                "1 oz Cranberry Juice",
+                "1/2 oz Triple Sec"
+            ],
+            instructions: [
+                "Pour juice and triple sec into flute, top with champagne."
+            ]
+        },
+        "Seelbach": {
+            ingredients: [
+                "1 oz Bourbon",
+                "1/2 oz Triple Sec",
+                "7 dashes Angostura Bitters",
+                "7 dashes Peychaud's Bitters",
+                "Champagne (to top)"
+            ],
+            instructions: [
+                "Stir bourbon, triple sec, bitters with ice, strain into flute, top with champagne."
+            ]
+        },
+        "Buck’s Fizz": {
+            ingredients: [
+                "2 oz Champagne",
+                "1 oz Orange Juice"
+            ],
+            instructions: [
+                "Pour orange juice into flute, top with champagne."
+            ]
+        },
+        "Sparkling Negroni": {
+            ingredients: [
+                "1 oz Gin",
+                "1 oz Campari",
+                "1 oz Sweet Vermouth",
+                "Champagne (to top)"
+            ],
+            instructions: [
+                "Build negroni over ice, top with champagne."
+            ]
+        },
+        "Sorrento Sparkler": {
+            ingredients: [
+                "Champagne (to top)",
+                "1 oz Limoncello"
+            ],
+            instructions: [
+                "Pour limoncello into flute, top with champagne."
+            ]
+        },
+        "Champagne Punch": {
+            ingredients: [
+                "Champagne",
+                "Fruit Juices",
+                "Fruit slices"
+            ],
+            instructions: [
+                "Mix in punch bowl, add champagne."
+            ]
+        },
+        "Blushing Bubbly": {
+            ingredients: [
+                "Champagne (to top)",
+                "1/2 oz Raspberry Liqueur"
+            ],
+            instructions: [
+                "Pour liqueur into flute, top with champagne."
+            ]
+        },
+        "Mango Mimosa": {
+            ingredients: [
+                "Champagne (to top)",
+                "2 oz Mango Juice"
+            ],
+            instructions: [
+                "Pour mango juice into flute, top with champagne."
+            ]
+        },
+        "Peach Fizz": {
+            ingredients: [
+                "Champagne (to top)",
+                "1 oz Peach Puree"
+            ],
+            instructions: [
+                "Pour puree into flute, top with champagne."
+            ]
+        },
+        "Lavender Fizz": {
+            ingredients: [
+                "Champagne (to top)",
+                "1/2 oz Lavender Syrup",
+                "1/2 oz Lemon Juice"
+            ],
+            instructions: [
+                "Mix syrup and lemon in flute, top with champagne."
+            ]
+        },
+        "Pink Champagne Punch": {
+            ingredients: [
+                "Champagne",
+                "Cranberry Juice",
+                "Pineapple Juice"
+            ],
+            instructions: [
+                "Mix juices, add champagne."
+            ]
+        },
+        "Pomegranate Spritz": {
+            ingredients: [
+                "Champagne (to top)",
+                "1 oz Pomegranate Juice",
+                "1/2 oz Elderflower Liqueur"
+            ],
+            instructions: [
+                "Mix juice and liqueur, top with champagne."
+            ]
+        },
+        "Ginger Fizz": {
+            ingredients: [
+                "Champagne (to top)",
+                "1 oz Ginger Syrup",
+                "1/2 oz Lime Juice"
+            ],
+            instructions: [
+                "Mix syrup and lime, top with champagne."
+            ]
+        },
+        "Champagne Julep": {
+            ingredients: [
+                "Champagne (to top)",
+                "2 oz Bourbon",
+                "Mint, Sugar"
+            ],
+            instructions: [
+                "Muddle mint and sugar, add bourbon, top with champagne."
+            ]
+        }
     };
 
     let popupSpun = false;
+    let selectedCocktail = null;
 
     function toggleOption(button) {
         const option = button.dataset.option;
@@ -361,52 +2815,68 @@
         updateReel();
     }
 
-function updateReel() {
-    const reel = document.getElementById('reel');
-    reel.innerHTML = '';
-    
-    selectedOptions.forEach(option => {
-        const segment = document.createElement('div');
-        segment.className = 'segment';
-        segment.textContent = option;
-        reel.appendChild(segment);
-    });
+    function updateReel() {
+        const reel = document.getElementById('reel');
+        reel.innerHTML = '';
+        
+        selectedOptions.forEach(option => {
+            const segment = document.createElement('div');
+            segment.className = 'segment';
+            segment.textContent = option;
+            reel.appendChild(segment);
+        });
 
-    // Duplicate the content to make the reel appear full initially
-    reel.innerHTML += reel.innerHTML;
+        reel.innerHTML += reel.innerHTML;
 
-    // Set initial position to make it look filled
-    const segmentHeight = 60; // height of each segment
-    reel.style.top = `-${selectedOptions.length * segmentHeight}px`;
-}
+        const segmentHeight = 60;
+        reel.style.top = `-${selectedOptions.length * segmentHeight}px`;
+    }
 
-function showPopup(selectedDrink) {
-    const popupReel = document.getElementById('popupReel');
-    const popupWindow = document.getElementById('popupWindow');
-    const popupTitle = document.getElementById('popupTitle');
+    function showPopup(selectedDrink) {
+        const popupReel = document.getElementById('popupReel');
+        const popupWindow = document.getElementById('popupWindow');
+        const popupTitle = document.getElementById('popupTitle');
+        const recipeContainer = document.getElementById('recipeContainer');
 
-    popupTitle.textContent = `Get some ${selectedDrink}`;
+        popupTitle.textContent = `Get some ${selectedDrink}`;
+        recipeContainer.innerHTML = '';
 
-    // Populate the reel with options for the selected drink
-    popupReel.innerHTML = '';
-    drinkOptions[selectedDrink].forEach(option => {
-        const segment = document.createElement('div');
-        segment.className = 'segment';
-        segment.textContent = option;
-        popupReel.appendChild(segment);
-    });
+        popupReel.innerHTML = '';
+        drinkOptions[selectedDrink].forEach(option => {
+            const segment = document.createElement('div');
+            segment.className = 'segment';
+            segment.textContent = option;
+            popupReel.appendChild(segment);
+        });
 
-    // Duplicate the content to make the reel appear full initially
-    popupReel.innerHTML += popupReel.innerHTML;
+        popupReel.innerHTML += popupReel.innerHTML;
 
-    // Set initial top position to simulate a full reel
-    const segmentHeight = 60; // height of each segment
-    popupReel.style.top = `-${drinkOptions[selectedDrink].length * segmentHeight}px`;
+        const segmentHeight = 60;
+        popupReel.style.top = `-${drinkOptions[selectedDrink].length * segmentHeight}px`;
 
-    // Show the popup
-    popupWindow.style.display = 'block';
-    popupSpun = false;
-}
+        popupWindow.style.display = 'block';
+        popupSpun = false;
+    }
+
+    function displayRecipe(cocktail) {
+        const recipeContainer = document.getElementById('recipeContainer');
+        const recipe = cocktailRecipes[cocktail] || {
+            ingredients: ["Recipe not available."],
+            instructions: ["Enjoy responsibly."]
+        };
+
+        recipeContainer.innerHTML = `
+            <h3>${cocktail} Recipe</h3>
+            <h4>Ingredients:</h4>
+            <ul>
+                ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+            </ul>
+            <h4>Instructions:</h4>
+            <ol>
+                ${recipe.instructions.map(ins => `<li>${ins}</li>`).join('')}
+            </ol>
+        `;
+    }
 
     function spinPopupReel(reel, options, button) {
         const segmentHeight = 60;
@@ -429,7 +2899,9 @@ function showPopup(selectedDrink) {
             reel.style.top = `${stopPosition - (options.length * segmentHeight)}px`;
 
             setTimeout(() => {
-                button.textContent = `Enjoy a ${options[randomIndex]}`;
+                selectedCocktail = options[randomIndex];
+                button.textContent = `Enjoy a ${selectedCocktail}`;
+                displayRecipe(selectedCocktail);
                 popupSpun = true;
             }, 3000);
         }, 2000);
@@ -444,6 +2916,8 @@ function showPopup(selectedDrink) {
         } else {
             document.getElementById('popupWindow').style.display = 'none';
             button.textContent = "Choozy Boozy";
+            selectedCocktail = null;
+            document.getElementById('recipeContainer').innerHTML = '';
         }
     }
 
