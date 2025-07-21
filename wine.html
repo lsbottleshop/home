@@ -180,6 +180,7 @@
         }
 
         #wine-details-text {
+            overflow-x: auto;
             /* Removed flex:1 to allow natural width and centering */
             /* Removed padding-right to reduce space */
         }
@@ -194,9 +195,16 @@
         }
 
         #popup p {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: baseline;
             margin: 10px 0;
             font-size: 16px;
-            white-space: nowrap; /* Prevent wrapping within each detail line */
+            white-space: nowrap;
+        }
+
+        #popup p strong {
+            margin-right: 5px;
         }
 
         #description {
@@ -372,8 +380,8 @@
             }
 
             #popup {
-                max-width: 90%; /* Narrower to add more side margins and reduce squished look */
-                padding: 20px; /* Increased padding for more space around content */
+                max-width: 80%; /* Adjusted to 80% as requested */
+                padding: 15px; /* Slightly reduced padding */
             }
 
             #wine-details {
@@ -381,26 +389,25 @@
                 align-items: center; /* Vertically center image with details */
                 justify-content: center;
                 flex-wrap: nowrap; /* Prevent wrapping on mobile to avoid squishing */
-                gap: 15px; /* Increased gap for better spacing between text and image */
+                gap: 20px; /* Increased gap to make text and image less close together */
             }
 
             #wine-image {
-                height: 180px; /* Slightly reduced height to prevent overlay and fit neatly */
-                margin-top: 0; /* Align with top of details */
-                margin-bottom: 0; /* Ensure no extra space at bottom */
-                vertical-align: middle; /* Center vertically between first and last detail line */
+                height: 180px; /* Kept height */
+                margin-top: 0;
+                margin-bottom: 0;
+                vertical-align: middle;
             }
 
             #wine-details-text {
                 flex: 1; /* Allow text to take available space */
                 min-width: 0; /* Prevent overflow */
+                overflow-x: auto; /* Allow horizontal scroll if needed */
             }
 
             #popup p {
-                white-space: normal; /* Allow wrapping to prevent overflow on small screens */
-                word-wrap: break-word; /* Ensure long words wrap */
-                margin: 8px 0; /* Slightly reduced vertical margin to fit more comfortably, but adjust if needed */
-                font-size: 14px; /* Slightly smaller font for better fit on mobile */
+                margin: 5px 0; /* Reduced margin for better fit */
+                font-size: 14px; /* Smaller font for mobile */
             }
 
             #description {
@@ -709,31 +716,52 @@
                         displayAttribute = 'Sweet/Dry';
                     }
 
+                    const label = document.createElement('strong');
+                    let valueText = '';
+                    let displayValue = '';
+
                     if (attribute === 'country') {
                         const primaryCountry = extractPrimaryCountry(wine['country']);
                         const flag = countryFlags[primaryCountry] || '';
-                        const displayCountry = (primaryCountry === 'usa') ? 'USA' : capitalize(primaryCountry);
-
+                        displayValue = (primaryCountry === 'usa') ? 'USA' : capitalize(primaryCountry);
                         if (flag) {
-                            p.innerHTML = `<strong>${displayAttribute}:</strong> ${displayCountry} ${flag}`;
+                            valueText = `${displayValue} ${flag}`;
                         } else {
-                            p.innerHTML = `<strong>${displayAttribute}:</strong> ${displayCountry} (Flag unavailable)`;
+                            valueText = `${displayValue}`;
                         }
+                        label.textContent = `${displayAttribute}:`;
                     } else if (attribute === 'dry-sweet') {
-                        const displayValue = capitalize(wine[attribute].replace('-', ' '));
-                        p.innerHTML = `<strong>${displayAttribute}:</strong> ${displayValue} ${emoji}`;
+                        displayValue = capitalize(wine[attribute].replace('-', ' '));
+                        label.textContent = `${displayAttribute}:`;
+                        valueText = displayValue;
                     } else if (wine[attribute].toLowerCase() === 'true') {
-                        p.innerHTML = `<strong>${displayAttribute}</strong> ${emoji}`;
+                        label.textContent = displayAttribute;
+                        valueText = '';
                     } else {
-                        p.innerHTML = `<strong>${displayAttribute}:</strong> ${capitalize(wine[attribute])} ${emoji}`;
+                        displayValue = capitalize(wine[attribute]);
+                        label.textContent = `${displayAttribute}:`;
+                        valueText = displayValue;
                     }
+
+                    p.appendChild(label);
+
+                    const valueSpan = document.createElement('span');
+                    valueSpan.textContent = valueText ? ` ${valueText}` : '';
+                    valueSpan.innerHTML += emoji ? ` ${emoji}` : '';
+                    p.appendChild(valueSpan);
+
                     wineDetailsContainer.appendChild(p);
                 }
             });
 
             if (wine['price rating']) {
                 const p = document.createElement('p');
-                p.innerHTML = `<strong>Price:</strong> ${wine['price rating']}`;
+                const label = document.createElement('strong');
+                label.textContent = 'Price:';
+                p.appendChild(label);
+                const valueSpan = document.createElement('span');
+                valueSpan.textContent = ` ${wine['price rating']}`;
+                p.appendChild(valueSpan);
                 wineDetailsContainer.appendChild(p);
             }
 
